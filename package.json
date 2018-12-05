@@ -4,6 +4,7 @@
   "description": "Home Assistant",
   "main": "index.js",
   "scripts": {
+    "start": "node index"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,8 @@
   },
   "homepage": "https://github.com/cmbuckley/home#readme",
   "dependencies": {
+    "express": "^4.16.4",
+    "express-basic-auth": "^1.1.6",
     "google-home-push": "^1.1.1"
   }
 }
