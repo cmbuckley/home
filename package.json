@@ -1,0 +1,21 @@
+{
+  "name": "home",
+  "version": "0.0.1",
+  "description": "Home Assistant",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmbuckley/home.git"
+  },
+  "author": "Chris Buckley <chris@cmbuckley.co.uk>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cmbuckley/home/issues"
+  },
+  "homepage": "https://github.com/cmbuckley/home#readme",
+  "dependencies": {
+    "google-home-push": "^1.1.1"
+  }
+}
