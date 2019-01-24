@@ -26,6 +26,7 @@
     "express-basic-auth": "^1.1.6",
     "fastify": "^2.10.0",
     "google-home-push": "^1.1.1",
+    "local-devices": "^1.1.1",
     "moment-timezone": "^0.5.26",
     "national-rail-darwin-promise": "^1.0.2",
     "neat-csv": "^5.1.0",
