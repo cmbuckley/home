@@ -10,8 +10,10 @@ function copyEvents() {
 
   // copy all events
   source.getEvents(startDate, endDate).forEach(function (event) {
+    const tagCopied = 'cce-copied';
+
     // ignore an event we’ve already copied
-    if (event.getColor() == CalendarApp.EventColor.RED) {
+    if (event.getTag(tagCopied) == 'true') {
       return;
     }
 
@@ -23,7 +25,7 @@ function copyEvents() {
       target.createEvent(title, event.getStartTime(), event.getEndTime());
     }
 
-    event.setColor(CalendarApp.EventColor.RED); // so we don’t copy it again
+    event.setTag(tagCopied, 'true'); // so we don't copy it again
     Utilities.sleep(250);
   });
 }
