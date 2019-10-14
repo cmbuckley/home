@@ -1,7 +1,6 @@
 require('dotenv').config();
 const GmailEmitter = require('./gmail');
 const SlackEmitter = require('./slack');
-
 const slack = new SlackEmitter();
 
 let events = {
@@ -17,6 +16,12 @@ let events = {
         text: 'Alarm is unset',
         color: 'good'
     },
+    alarm_error_unset_weekday: {
+        title: 'Alarm Not Set',
+        fallback: 'Alarm has not been set! Did you mean to set it?',
+        text: '<!here> alarm has not been set! Did you mean to set it?',
+        color: 'danger'
+    }
 };
 
 slack.on('ready', function () {
@@ -30,11 +35,16 @@ slack.on('ready', function () {
         let code = (mail.text || mail.html).trim();
 
         if (events[code]) {
-            let body = Object.assign({}, events[code]);
-            body.title = 'Alarm State Changed';
-            slack.emit('message', 'home-events', body);
+            slack.emit('message', 'home-events', Object.assign({
+                title: 'Alarm State Changed',
+            }, events[code]));
         } else {
-            console.error('Invalid alarm code:', code);
+            console.error('Unknown alarm code:', code);
+            slack.emit('message', 'jarvis-test', {
+                title: 'Unknown alarm code',
+                text: code,
+                color: 'warning'
+            });
         }
     });
 });
