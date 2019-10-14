@@ -1,4 +1,5 @@
 require('dotenv').config();
+const moment = require('moment');
 const GmailEmitter = require('./gmail');
 const SlackEmitter = require('./slack');
 const slack = new SlackEmitter();
@@ -33,12 +34,11 @@ slack.on('ready', function () {
     gmail.on('mail', function (mail, seqno, attributes) {
         console.log('Mail received', mail);
         let code = (mail.text || mail.html).trim();
-        let date = new Date(mail.headers.date);
 
         if (events[code]) {
             slack.emit('message', 'home-events', Object.assign({
                 title: 'Alarm State Changed',
-                footer: [('0' + date.getHours()).substr(-2), date.getMinutes()].join(':'),
+                footer: moment(mail.headers.date).format('LT'),
             }, events[code]));
         } else {
             console.error('Unknown alarm code:', code);
