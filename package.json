@@ -17,8 +17,12 @@
   },
   "homepage": "https://github.com/cmbuckley/home#readme",
   "dependencies": {
+    "@slack/events-api": "^2.3.0",
+    "@slack/web-api": "^5.2.1",
+    "dotenv": "^8.1.0",
     "express": "^4.16.4",
     "express-basic-auth": "^1.1.6",
-    "google-home-push": "^1.1.1"
+    "google-home-push": "^1.1.1",
+    "mail-listener2": "^0.3.1"
   }
 }
