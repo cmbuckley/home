@@ -33,10 +33,12 @@ slack.on('ready', function () {
     gmail.on('mail', function (mail, seqno, attributes) {
         console.log('Mail received', mail);
         let code = (mail.text || mail.html).trim();
+        let date = new Date(mail.headers.date);
 
         if (events[code]) {
             slack.emit('message', 'home-events', Object.assign({
                 title: 'Alarm State Changed',
+                footer: [('0' + date.getHours()).substr(-2), date.getMinutes()].join(':'),
             }, events[code]));
         } else {
             console.error('Unknown alarm code:', code);
