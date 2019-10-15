@@ -43,7 +43,7 @@ slack.on('ready', async () => {
     }
 
     let text = util.format('The next %d departures from %s to %s are:', limit, from.station, to.station);
-    slack.emit('message', 'jarvis-test', {
+    slack.postMessage('jarvis-test', {
         text: text,
         blocks: [{
             type: 'section',

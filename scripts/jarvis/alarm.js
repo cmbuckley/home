@@ -36,7 +36,7 @@ slack.on('ready', function () {
         let code = (mail.text || mail.html).trim();
 
         if (events[code]) {
-            slack.emit('message', 'home-events', {
+            slack.postMessage('home-events', {
                 attachments: [Object.assign({
                     title: 'Alarm State Changed',
                     footer: moment(mail.headers.date).format('LT'),
@@ -44,7 +44,7 @@ slack.on('ready', function () {
             });
         } else {
             console.error('Unknown alarm code:', code);
-            slack.emit('message', 'jarvis-test', {
+            slack.postMessage('jarvis-test', {
                 attachments: [{
                     title: 'Unknown alarm code',
                     text: code,

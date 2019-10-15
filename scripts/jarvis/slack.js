@@ -5,7 +5,6 @@ const web = new WebClient(process.env.SLACK_TOKEN);
 class SlackEmitter extends EventEmitter {
     constructor() {
         super();
-        this.on('message', this.message.bind(this));
 
         (async () => {
             await this.getChannels();
@@ -19,7 +18,7 @@ class SlackEmitter extends EventEmitter {
         return this.channels;
     }
 
-    message(channel, options) {
+    postMessage(channel, options) {
         options.channel = this.channels.find(c => c.name == channel).id;
         web.chat.postMessage(options);
     }
