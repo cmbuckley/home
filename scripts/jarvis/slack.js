@@ -19,13 +19,9 @@ class SlackEmitter extends EventEmitter {
         return this.channels;
     }
 
-    message(channel, body) {
-        if (!body.fallback) { body.fallback = body.text; }
-
-        web.chat.postMessage({
-            channel: this.channels.find(c => c.name == channel).id,
-            attachments: [body],
-        });
+    message(channel, options) {
+        options.channel = this.channels.find(c => c.name == channel).id;
+        web.chat.postMessage(options);
     }
 }
 

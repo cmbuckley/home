@@ -36,16 +36,21 @@ slack.on('ready', function () {
         let code = (mail.text || mail.html).trim();
 
         if (events[code]) {
-            slack.emit('message', 'home-events', Object.assign({
-                title: 'Alarm State Changed',
-                footer: moment(mail.headers.date).format('LT'),
-            }, events[code]));
+            slack.emit('message', 'home-events', {
+                attachments: [Object.assign({
+                    title: 'Alarm State Changed',
+                    footer: moment(mail.headers.date).format('LT'),
+                }, events[code])]
+            });
         } else {
             console.error('Unknown alarm code:', code);
             slack.emit('message', 'jarvis-test', {
-                title: 'Unknown alarm code',
-                text: code,
-                color: 'warning'
+                attachments: [{
+                    title: 'Unknown alarm code',
+                    text: code,
+                    color: 'warning',
+                    footer: moment(mail.headers.date).format('LT'),
+                }]
             });
         }
     });
