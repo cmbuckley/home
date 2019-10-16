@@ -1,9 +1,7 @@
 const EventEmitter = require('events');
 const MailListener = require('mail-listener2');
 
-const listener = new MailListener({
-    username: process.env.GMAIL_USERNAME,
-    password: process.env.GMAIL_PASSWORD,
+let listenerConfig = {
     host: 'imap.gmail.com',
     port: 993, // imap port
     tls: true,
@@ -18,11 +16,17 @@ const listener = new MailListener({
     //mailParserOptions: {streamAttachments: true}, // options to be passed to mailParser lib.
     //attachments: true, // download attachments as they are encountered to the project directory
     //attachmentOptions: { directory: 'attachments/' } // specify a download directory for attachments
-});
+};
 
 class GmailEmitter extends EventEmitter {
     constructor(options) {
         super();
+
+        const listener = new MailListener(Object.assign({
+            username: options.username,
+            password: options.password,
+        }, listenerConfig));
+
         listener.start();
 
         listener.on('error', function (err) {

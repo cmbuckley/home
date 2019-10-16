@@ -5,7 +5,6 @@ const Fastify = require('fastify');
 const { WebClient } = require('@slack/web-api');
 const { IncomingWebhook } = require('@slack/webhook');
 
-const web = new WebClient(process.env.SLACK_TOKEN);
 const fastify = Fastify({logger: true});
 
 // we need the raw body for the signature verification, so parse as plain text (but parse before the handler)
@@ -33,7 +32,7 @@ function createServer(slack) {
     // verify the request signature
     function verify(req) {
         // recreate each time
-        const hmac = crypto.createHmac('sha256', process.env.SLACK_SIGNING_SECRET);
+        const hmac = crypto.createHmac('sha256', slack.options.signingSecret);
 
         let signature = req.headers['x-slack-signature'].split('='),
             timestamp = req.headers['x-slack-request-timestamp'],
@@ -77,7 +76,9 @@ function createServer(slack) {
 class SlackEmitter extends EventEmitter {
     constructor(options) {
         super();
+
         this.options = options || {};
+        this.webClient = new WebClient(this.options.accessToken);
         createServer(this);
 
         (async () => {
@@ -98,14 +99,14 @@ class SlackEmitter extends EventEmitter {
     }
 
     async getChannels() {
-        const response = await web.channels.list();
+        const response = await this.webClient.channels.list();
         this.channels = response.channels;
         return this.channels;
     }
 
     postMessage(channel, options) {
         options.channel = this.channels.find(c => c.name == channel).id;
-        web.chat.postMessage(options);
+        this.webClient.chat.postMessage(options);
     }
 }
 
