@@ -1,5 +1,5 @@
 require('dotenv').config();
-const moment = require('moment');
+const moment = require('moment-timezone');
 const GmailEmitter = require('./gmail');
 const SlackEmitter = require('./slack');
 const slack = new SlackEmitter();
