@@ -1,13 +1,12 @@
-require('dotenv').config();
 const fs = require('fs');
 const util = require('util');
 const csv = require('neat-csv');
 const moment = require('moment-timezone');
 const Rail = require('national-rail-darwin-promise');
-const SlackEmitter = require('./slack');
-const rail = new Rail(process.env.RAIL_TOKEN);
 
-(async () => {
+module.exports = async function (slack, options) {
+    const rail = new Rail(options.railToken);
+
     // load station details
     const file = await util.promisify(fs.readFile)('config/station_codes.csv', 'utf8');
     const stations = await csv(file, {
@@ -19,11 +18,9 @@ const rail = new Rail(process.env.RAIL_TOKEN);
         return stations.find(s => (s.code.toLowerCase() == lookup || s.station.toLowerCase() == lookup));
     }
 
-    const slack = new SlackEmitter({allowSlashImmediate: false});
-    slack.on('error', console.error);
     slack.on('slash:trains', async function(args, reply) {
-        let from = (args.length == 2 ? args[0] : 'LDS'),
-            to = (args.length == 2 ? args[1] : 'HFX'),
+        let from = (args.length == 2 ? args[0] : options.defaultFrom),
+            to = (args.length == 2 ? args[1] : options.defaultTo),
             limit = 3,
             fields = [];
 
@@ -37,7 +34,7 @@ const rail = new Rail(process.env.RAIL_TOKEN);
 
         // default train stations switches direction in the afternoon
         if (args.length == 0 && moment().tz('Europe/London').format('a') == 'pm') {
-            from = 'HFX'; to = 'LDS';
+            [from, to] = [to, from];
         }
 
         from = getCode(from);
@@ -103,4 +100,4 @@ const rail = new Rail(process.env.RAIL_TOKEN);
             }],
         });
     });
-})();
+};
