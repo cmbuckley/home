@@ -28,13 +28,16 @@ module.exports = function (slack, options) {
 
         gmail.on('mail', function (mail, seqno, attributes) {
             console.log('Mail received', mail);
-            let code = (mail.text || mail.html).trim();
+            let code = (mail.text || mail.html).trim(),
+                timestamp = moment(mail.headers.date) / 1000;
 
             if (events[code]) {
+
                 slack.postMessage(options.channel.default, {
                     attachments: [Object.assign({
                         title: 'Alarm State Changed',
-                        footer: moment(mail.headers.date).format('LT'),
+                        ts: timestamp,
+                        fallback: events[code].text,
                     }, events[code])]
                 });
             } else {
@@ -44,7 +47,7 @@ module.exports = function (slack, options) {
                         title: 'Unknown alarm code',
                         text: code,
                         color: 'warning',
-                        footer: moment(mail.headers.date).format('LT'),
+                        ts: timestamp,
                     }]
                 });
             }
