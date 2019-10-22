@@ -7,7 +7,7 @@ let listenerConfig = {
     tls: true,
     connTimeout: 10000, // Default by node-imap
     authTimeout: 5000, // Default by node-imap,
-    debug: console.log, // Or your custom function with only one incoming argument. Default: null
+    debug: console.log,
     tlsOptions: { rejectUnauthorized: true },
     mailbox: 'INBOX', // mailbox to monitor
     searchFilter: ['UNSEEN'], // the search filter being used after an IDLE notification has been retrieved
@@ -22,6 +22,7 @@ class GmailEmitter extends EventEmitter {
     constructor(options) {
         super();
 
+        if (options.logger) { listenerConfig.debug = options.logger.debug.bind(options.logger); }
         const listener = new MailListener(Object.assign({
             username: options.username,
             password: options.password,

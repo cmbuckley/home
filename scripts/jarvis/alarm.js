@@ -24,10 +24,11 @@ let events = {
 
 module.exports = function (slack, options) {
     slack.on('ready', function () {
+        options.email.logger = options.logger.child({module: 'mail'});
         const gmail = new GmailEmitter(options.email);
 
         gmail.on('mail', function (mail, seqno, attributes) {
-            console.log('Mail received', mail);
+            options.logger.info('Mail received', mail);
             let code = (mail.text || mail.html).trim(),
                 timestamp = moment(mail.headers.date) / 1000;
 
@@ -41,7 +42,7 @@ module.exports = function (slack, options) {
                     }, events[code])]
                 });
             } else {
-                console.error('Unknown alarm code:', code);
+                options.logger.error('Unknown alarm code:', code);
                 slack.postMessage(options.channel.error, {
                     attachments: [{
                         title: 'Unknown alarm code',

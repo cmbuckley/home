@@ -70,7 +70,7 @@ module.exports = async function (slack, options) {
                 return fields;
             }, []);
         } catch (err) {
-            console.log(err);
+            slack.log.error(err);
             return reply({
                 response_type: 'ephemeral',
                 text: 'Sorry! There was an error: ' + err.message,

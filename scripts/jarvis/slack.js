@@ -5,11 +5,6 @@ const Fastify = require('fastify');
 const { WebClient } = require('@slack/web-api');
 const { IncomingWebhook } = require('@slack/webhook');
 
-const fastify = Fastify({logger: true});
-
-// we need the raw body for the signature verification, so parse as plain text (but parse before the handler)
-fastify.addContentTypeParser('application/x-www-form-urlencoded', {parseAs: 'string'}, (req, body, done) => done(null, body));
-fastify.addHook('preHandler', (req, res, done) => { req.data = qs.parse(req.body); done(); });
 
 // server to listen for /slash commands
 function createServer(slack) {
@@ -41,19 +36,19 @@ function createServer(slack) {
         try {
             return (signature[1] == hmac.update(basestring).digest('hex'));
         } catch (err) {
-            fastify.log.warn(err);
-            console.log(basestring);
+            slack.log.warn(err);
+            slack.log.debug(basestring);
         }
     }
 
-    fastify.post('/', function (req, res) {
+    slack.server.post('/', function (req, res) {
         // parse command arguments
         let command = req.data.command.replace(/^\//, ''),
             args = req.data.text.match(/(?<=“|")[^"“”]+?(?=”|")|[^\s"“”]+/g) || [];
 
         // exit cleanly for non-verified requests
         if (!verify(req)) {
-            fastify.log.warn('Could not verify request');
+            slack.log.warn('Could not verify request');
             return res.send();
         }
 
@@ -78,6 +73,13 @@ class SlackEmitter extends EventEmitter {
         super();
 
         this.options = options || {};
+        this.log = this.options.logger;
+        this.server = Fastify({logger: this.options.logger});
+
+        // we need the raw body for the signature verification, so parse as plain text (but parse before the handler)
+        this.server.addContentTypeParser('application/x-www-form-urlencoded', {parseAs: 'string'}, (req, body, done) => done(null, body));
+        this.server.addHook('preHandler', (req, res, done) => { req.data = qs.parse(req.body); done(); });
+
         this.webClient = new WebClient(this.options.accessToken);
         createServer(this);
 
@@ -89,10 +91,10 @@ class SlackEmitter extends EventEmitter {
             }
 
             try {
-                await fastify.listen(3000);
+                await this.server.listen(3000);
                 this.emit('ready');
             } catch (err) {
-                fastify.log.error(err);
+                this.log.error(err);
                 this.emit('error', err);
             }
         })();
