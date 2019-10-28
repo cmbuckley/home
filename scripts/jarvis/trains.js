@@ -57,14 +57,16 @@ module.exports = async function (slack, options) {
         try {
             let departures = await rail.getDepartureBoard(from.code, {destination: to.code});
             fields = departures.trainServices.slice(0, limit).reduce(function (fields, dep) {
-                let marker = (dep.etd == 'On time' ? '' : ':warning: ');
+                let markers = {'On time': '', 'Cancelled': ':no_entry_sign: '},
+                    marker = (markers.hasOwnProperty(dep.etd) ? markers[dep.etd] : ':warning: ');
+
                 fields.push({
                     type: 'mrkdwn',
                     text: '*' + dep.std + '* ' + dep.destination.name,
                 }, {
                     type: 'mrkdwn',
                     text: marker + (dep.platform ? 'Plat ' + dep.platform + ', ' : '')
-                        + (dep.etd == 'On time' ? dep.etd : 'Exp *' + dep.etd + '*'),
+                        + (['Cancelled', 'On time'].includes(dep.etd) ? dep.etd : 'Exp *' + dep.etd + '*'),
                 });
 
                 return fields;
