@@ -29,8 +29,8 @@ module.exports = function (slack, options) {
 
         gmail.on('mail', function (mail, seqno, attributes) {
             options.logger.info('Mail received', mail);
-            let code = (mail.text || mail.html).trim(),
-                timestamp = moment(mail.headers.date) / 1000;
+            let code = (mail.body.text || mail.body.html).trim(),
+                timestamp = moment(mail.headers.get('date')) / 1000;
 
             if (events[code]) {
 

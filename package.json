@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/cmbuckley/home#readme",
   "dependencies": {
+    "@digitalgarage/mail-listener": "^1.0.1",
     "@slack/events-api": "^2.3.0",
     "@slack/web-api": "^5.2.1",
     "@slack/webhook": "^5.0.2",
@@ -25,7 +26,6 @@
     "express-basic-auth": "^1.1.6",
     "fastify": "^2.10.0",
     "google-home-push": "^1.1.1",
-    "mail-listener2": "^0.3.1",
     "moment-timezone": "^0.5.26",
     "national-rail-darwin-promise": "^1.0.2",
     "neat-csv": "^5.1.0",
