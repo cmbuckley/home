@@ -99,6 +99,12 @@ module.exports = async function (slack, options) {
                     text: ':train2: ' + text,
                 },
                 fields: fields
+            }, {
+                type: 'context',
+                elements: [{
+                    type: 'mrkdwn',
+                    text: '*<http://ojp.nationalrail.co.uk/service/ldbboard/dep/' + from.code + '/' + to.code + '/To|Show more times>*',
+                }]
             }],
         });
     });
