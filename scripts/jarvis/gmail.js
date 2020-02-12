@@ -36,7 +36,7 @@ class GmailEmitter extends EventEmitter {
 
         listener.on('error', function (err) {
             this.emit('error', err);
-        });
+        }.bind(this));
 
         listener.on('mail', function (mail, seqno, attributes) {
             if (mail.headers.get('from').value[0].address == options.from && (!options.subject || mail.headers.get('subject') == options.subject)) {

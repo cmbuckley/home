@@ -27,6 +27,10 @@ module.exports = function (slack, options) {
         options.email.logger = options.logger.child({module: 'mail'});
         const gmail = new GmailEmitter(options.email);
 
+        gmail.on('error', function (err) {
+            options.logger.error(err);
+        });
+
         gmail.on('mail', function (mail, seqno, attributes) {
             options.logger.info('Mail received', mail);
             let code = (mail.body.text || mail.body.html).trim(),
