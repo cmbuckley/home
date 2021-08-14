@@ -1,6 +1,6 @@
-export CF_Token="sdfsdfsdfljlbjkljlkjsdfoiwje"
-export CF_Account_ID="xxxxxxxxxxxxx"
-export CF_Zone_ID="xxxxxxxxxxxxx"
+# Should export the following vars: CF_Token, CF_Account_ID, CF_Zone_ID
+source ${BASH_SOURCE%/*}/issue.env
 domain=$1
+ssldir=/usr/syno/etc/certificate/system/FQDN
 
-./acme.sh --force --issue --dns dns_cf -d $domain --fullchain-file /usr/syno/etc/certificate/system/FQDN/fullchain.pem --key-file /usr/syno/etc/certificate/system/FQDN/privkey.pem --reloadcmd "synoservice --restart nginx"
+${BASH_SOURCE%/*}/../acme/acme.sh --debug --force --issue --dns dns_cf -d $domain --fullchain-file $ssldir/fullchain.pem --key-file $ssldir/privkey.pem --reloadcmd "synoservice --restart nginx"
