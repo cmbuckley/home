@@ -1,0 +1,5 @@
+chris_and_emilia:
+  name: Chris and Emilia
+  entities:
+    - person.chris_buckley
+    - person.emilia_lewandowska

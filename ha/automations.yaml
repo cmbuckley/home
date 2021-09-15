@@ -1,0 +1,77 @@
+- id: '1613991955943'
+  alias: Doorbell - Low Battery
+  description: ''
+  trigger:
+  - type: battery_level
+    platform: device
+    device_id: e76d85608520d875d4146405695cedb3
+    entity_id: sensor.front_door_battery
+    domain: sensor
+    below: 21
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - type: battery_level
+    platform: device
+    device_id: e76d85608520d875d4146405695cedb3
+    entity_id: sensor.front_door_battery
+    domain: sensor
+    below: 11
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: notify.slack
+    data:
+      message: ':battery: {{ states.sensor.front_door_battery.name }} at {{ states.sensor.front_door_battery.state
+        }}%.'
+  mode: queued
+  max: 10
+- id: '1614507088817'
+  alias: Doorbell - Ring
+  description: ''
+  trigger:
+  - type: occupied
+    platform: device
+    device_id: e76d85608520d875d4146405695cedb3
+    entity_id: binary_sensor.front_door_ding
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  condition: []
+  action:
+  - service: notify.slack
+    data:
+      message: ':bell: Someone is at your front door.'
+  - service: media_player.play_media
+    data:
+      media_content_id: https://scripts.cmbuckley.co.uk/ring.mp3
+      media_content_type: music
+    entity_id: media_player.all
+  mode: single
+- alias: slack_webhook
+  trigger:
+  - platform: webhook
+    webhook_id: slack_interactivity
+  condition:
+  - condition: template
+    value_template: '{% set payload = trigger.data.payload | from_json %} {{ (payload.type
+      == ''interactive_message'') }}
+
+      '
+  action:
+  - service_template: '{%- set payload = trigger.data.payload | from_json -%} script.slack_callback_{{
+      payload.callback_id }}
+
+      '
+    data_template:
+      payload: '{{ trigger.data.payload }}'
+  id: 1b988aa6b2924bd48309a0818c8c9fb8

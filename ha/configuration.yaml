@@ -1,0 +1,86 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+# Presence detection
+device_tracker:
+  - platform: sky_hub
+    host: !secret ip_sky_hub
+
+duckdns:
+  domain: !secret dns_domain
+  access_token: !secret dns_token
+
+# Needed to turn on TV
+wake_on_lan:
+
+# TV
+webostv:
+  - name: Living Room TV
+    host: !secret ip_living_room_tv
+    turn_on_action:
+      service: wake_on_lan.send_magic_packet
+      data:
+        mac: !secret mac_living_room_tv
+
+notify:
+  - name: Slack
+    platform: slack
+    api_key: !secret notify_slack_api_key
+    default_channel: "#home-events"
+
+rest_command:
+  slack_api:
+    url: https://slack.com/api/{{ api }}
+    content_type: 'application/json; charset=utf-8'
+    verify_ssl: true
+    method: 'post'
+    timeout: 20
+    headers:
+      Authorization: !secret notify_slack_bearer_header
+    payload: '{{ payload }}'
+  slack_response:
+    url: '{{ response_url }}'
+    content_type: 'application/json; charset-utf-8'
+    verify_ssl: true
+    method: 'post'
+    timeout: 20
+    payload: >
+      {
+        "replace_original": {{ replace_original if (replace_original is defined) else 'true' }},
+        "text": "{{ message }}",
+        "attachments": {{ attachments if (attachments is defined) else '[]' }}
+      }
+
+switch:
+  - platform: rpi_rf
+    gpio: 17
+    switches:
+      rf_plug_1:
+        pulselength: 417
+        code_on: 1381717
+        code_off: 1381716
+      rf_plug_2:
+        pulselength: 417
+        code_on: 1394005
+        code_off: 1394004
+      rf_plug_3:
+        pulselength: 417
+        code_on: 1397077
+        code_off: 1397076
+      rf_plug_4:
+        pulselength: 417
+        code_on: 1397845
+        code_off: 1397844
+
+
+
+frontend:
+  themes: !include_dir_merge_named themes
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
