@@ -75,3 +75,25 @@
     data_template:
       payload: '{{ trigger.data.payload }}'
   id: 1b988aa6b2924bd48309a0818c8c9fb8
+- id: '1635200213159'
+  alias: Presence - Someone is Home
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.chris_emilia
+    to: home
+  condition: []
+  action:
+  - service: script.coming_home
+  mode: single
+- id: '1635200280200'
+  alias: Presence - No One is Home
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.chris_emilia
+    to: away
+  condition: []
+  action:
+  - service: script.leaving_home
+  mode: single

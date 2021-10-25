@@ -9,3 +9,23 @@ notify_slack:
             "text": "{{ message }}",
             "attachments": {{ attachments if (attachments is defined) else '[]' }}
           }
+leaving_home:
+  alias: Leaving Home
+  sequence:
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: away
+    target:
+      entity_id: all
+  mode: single
+  icon: mdi:home-export-outline
+coming_home:
+  alias: Coming Home
+  sequence:
+  - service: climate.set_preset_mode
+    target:
+      entity_id: all
+    data:
+      preset_mode: home
+  mode: single
+  icon: mdi:home-import-outline
