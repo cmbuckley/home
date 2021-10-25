@@ -8,6 +8,10 @@ Script the following:
 ** Should do regular updates, ideally with a canary image and testing the config against the new version
 * Nightly backups
 
+## Other Things
+
+https://community.home-assistant.io/t/complete-guide-on-setting-up-grafana-influxdb-with-home-assistant-using-official-docker-images/42860
+
 ## Updating
 
 ```bash
