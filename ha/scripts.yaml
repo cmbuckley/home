@@ -17,6 +17,9 @@ leaving_home:
       preset_mode: away
     target:
       entity_id: all
+  - service: switch.turn_off
+    target:
+      entity_id: switch.voltaire_home_mode
   mode: single
   icon: mdi:home-export-outline
 coming_home:
@@ -27,5 +30,8 @@ coming_home:
       entity_id: all
     data:
       preset_mode: home
+  - service: switch.turn_on
+    target:
+      entity_id: switch.voltaire_home_mode
   mode: single
   icon: mdi:home-import-outline
