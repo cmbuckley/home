@@ -1,14 +1,3 @@
-notify_slack:
-  sequence:
-  - service: rest_command.slack_api
-    data_template:
-      api: chat.postMessage
-      payload: >
-        {
-          "channel": "{{ channel | default('home-events') }}",
-          "text": "{{ message }}",
-          "attachments": {{ attachments if (attachments is defined) else '[]' }}
-        }
 leaving_home:
   alias: Leaving Home
   sequence:
