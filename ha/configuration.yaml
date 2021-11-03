@@ -1,14 +1,12 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
+logger:
+  default: warning
+
 # Text to speech
 tts:
   - platform: google_translate
-
-# Presence detection
-device_tracker:
-  - platform: sky_hub
-    host: !secret ip_sky_hub
 
 duckdns:
   domain: !secret dns_domain
