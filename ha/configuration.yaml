@@ -1,6 +1,11 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+
 logger:
   default: warning
 
@@ -35,6 +40,10 @@ notify:
     api_key: !secret notify_slack_api_key
     default_channel: "#home-events"
 
+input_text:
+  slack_verification_token:
+    initial: !secret slack_verification_token
+
 rest_command:
   slack_api:
     url: https://slack.com/api/{{ api }}
@@ -49,13 +58,13 @@ rest_command:
     url: '{{ response_url }}'
     content_type: 'application/json; charset-utf-8'
     verify_ssl: true
-    method: 'post'
+    method: post
     timeout: 20
     payload: >
       {
-        "replace_original": {{ replace_original if (replace_original is defined) else 'true' }},
-        "text": "{{ message }}",
-        "attachments": {{ attachments if (attachments is defined) else '[]' }}
+        "replace_original": "{{ replace_original if (replace_original is defined) else 'true' | lower }}",
+        "text": "{{ text }}",
+        "blocks": {{ blocks if (blocks is defined) else [] | to_json }}
       }
 
 switch:
