@@ -76,44 +76,8 @@ template:
         unit_of_measurement: '%'
         state: '{{ state_attr("binary_sensor.someone_home", "probability_threshold") }}'
 
-binary_sensor:
-  - platform: bayesian
-    name: Someone Home
-    prior: 0.7
-    probability_threshold: 0.9
-    observations:
-      - entity_id: group.chris_emilia
-        platform: state
-        to_state: home
-        prob_given_true: 0.96
-        prob_given_false: 0.01
-      - entity_id: group.chris_emilia
-        platform: state
-        to_state: not_home
-        prob_given_true: 0.04
-        prob_given_false: 0.99
-      - entity_id: binary_sensor.edgeos_device_lgwebostv
-        platform: state
-        to_state: on
-        prob_given_true: 0.25
-        prob_given_false: 0
-      - entity_id: binary_sensor.edgeos_device_lgwebostv
-        platform: state
-        to_state: off
-        prob_given_true: 0.75
-        prob_given_false: 1
-      - entity_id: group.living_room_lights
-        platform: state
-        to_state: on
-        prob_given_true: 0.4
-        prob_given_false: 0.01
-      - entity_id: group.living_room_lights
-        platform: state
-        to_state: off
-        prob_given_true: 0.6
-        prob_given_false: 0.99
-
-
+binary_sensor: !include_dir_list binary_sensor
+sensor: !include_dir_list sensor
 frontend:
   themes: !include_dir_merge_named themes
 automation: !include_dir_list automation
