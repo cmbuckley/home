@@ -1,4 +1,6 @@
+image
 node_modules
 .env
+.HA_VERSION
 scripts/jarvis/*.json
 __pycache__
