@@ -43,6 +43,8 @@ notify:
 input_text:
   slack_verification_token:
     initial: !secret slack_verification_token
+  hass_internal_url:
+    initial: !secret hass_internal_url
 
 rest_command: !include_dir_named rest_command
 

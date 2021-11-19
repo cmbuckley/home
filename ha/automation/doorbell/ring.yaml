@@ -16,8 +16,9 @@ action:
   data:
     message: ':bell: Someone is at your front door.'
 - service: media_player.play_media
-  data:
-    media_content_id: https://scripts.cmbuckley.co.uk/ring.mp3
+  data_template:
+    media_content_id: >
+      {{ states('input_text.hass_internal_url') }}/local/doorbell_tones/ring.mp3
     media_content_type: music
   entity_id: media_player.all
 mode: single
