@@ -1,0 +1,16 @@
+id: slack_inbound_webhook
+alias: Slack - Inbound Webhook
+trigger:
+- platform: webhook
+  webhook_id: slack_interactivity
+condition:
+- condition: template
+  value_template: >
+    {%- set payload = trigger.data.payload | from_json -%}
+    {{ (payload.token == states('input_text.slack_verification_token')) and (payload.type == 'block_actions') }}
+action:
+- service_template: >
+    {%- set payload = trigger.data.payload | from_json -%}
+    script.slack_callback_{{ payload.actions[0].block_id.split('|')[0] }}
+  data_template:
+    payload: '{{ trigger.data.payload | from_json }}'

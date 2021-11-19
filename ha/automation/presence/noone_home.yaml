@@ -1,0 +1,9 @@
+id: presence_noone_home
+alias: Presence - No One is Home
+trigger:
+- platform: state
+  entity_id: group.chris_emilia
+  to: not_home
+action:
+- service: script.leaving_home
+mode: single

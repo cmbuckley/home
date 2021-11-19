@@ -1,0 +1,31 @@
+id: doorbell_low_battery
+alias: Doorbell - Low Battery
+trigger:
+- type: battery_level
+  platform: device
+  device_id: e76d85608520d875d4146405695cedb3
+  entity_id: sensor.front_door_battery
+  domain: sensor
+  below: 21
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 0
+    milliseconds: 0
+- type: battery_level
+  platform: device
+  device_id: e76d85608520d875d4146405695cedb3
+  entity_id: sensor.front_door_battery
+  domain: sensor
+  below: 11
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 0
+    milliseconds: 0
+action:
+- service: notify.slack
+  data:
+    message: ':battery: {{ states.sensor.front_door_battery.name }} at {{ states.sensor.front_door_battery.state }}%.'
+mode: queued
+max: 10

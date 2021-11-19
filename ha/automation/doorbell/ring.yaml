@@ -1,0 +1,23 @@
+id: doorbell_ring
+alias: Doorbell - Ring
+trigger:
+- type: occupied
+  platform: device
+  device_id: e76d85608520d875d4146405695cedb3
+  entity_id: binary_sensor.front_door_ding
+  domain: binary_sensor
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 1
+    milliseconds: 0
+action:
+- service: notify.slack
+  data:
+    message: ':bell: Someone is at your front door.'
+- service: media_player.play_media
+  data:
+    media_content_id: https://scripts.cmbuckley.co.uk/ring.mp3
+    media_content_type: music
+  entity_id: media_player.all
+mode: single

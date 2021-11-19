@@ -1,0 +1,14 @@
+id: transmission_completed_torrent
+alias: Transmission - Completed Torrent
+trigger:
+  platform: event
+  event_type: transmission_downloaded_torrent
+action:
+  - service: notify.slack
+    data:
+      message: 'Download completed: “{{ trigger.event.data.name }}”'
+      target: '#synology'
+  - service: transmission.remove_torrent
+    data:
+      name: Transmission
+      id: '{{ trigger.event.data.id }}'

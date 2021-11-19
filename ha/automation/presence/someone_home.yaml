@@ -1,0 +1,9 @@
+id: presence_someone_home
+alias: Presence - Someone is Home
+trigger:
+- platform: state
+  entity_id: group.chris_emilia
+  to: home
+action:
+- service: script.coming_home
+mode: single

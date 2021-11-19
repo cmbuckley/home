@@ -138,6 +138,6 @@ binary_sensor:
 frontend:
   themes: !include_dir_merge_named themes
 group: !include groups.yaml
-automation: !include automations.yaml
+automation: !include_dir_list automation
 script: !include scripts.yaml
 scene: !include scenes.yaml
