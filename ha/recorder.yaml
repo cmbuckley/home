@@ -1,0 +1,10 @@
+purge_keep_days: 5
+commit_interval: 2 # seconds
+exclude:
+  domains:
+  - sun
+  - weather
+  entities:
+  - sensor.edgeos_system_uptime
+  entity_globs:
+  - binary_sensor.edgeos_*

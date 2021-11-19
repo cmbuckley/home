@@ -141,3 +141,4 @@ automation: !include_dir_list automation
 group: !include_dir_named group
 script: !include_dir_named script
 scene: !include scenes.yaml
+recorder: !include recorder.yaml
