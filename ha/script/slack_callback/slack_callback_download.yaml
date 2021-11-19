@@ -1,0 +1,12 @@
+alias: Slack Callback - Download Link
+icon: mdi:download
+sequence:
+- service: transmission.add_torrent
+  data_template:
+    name: Transmission
+    torrent: '{{ payload.actions[0].value }}'
+- service: rest_command.slack_response
+  data_template:
+    response_url: '{{ payload.response_url }}'
+    replace_original: true
+    text: 'Started downloading “*{{ payload.actions[0].action_id }}*”.'

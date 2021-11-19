@@ -1,0 +1,12 @@
+alias: Leaving Home
+sequence:
+- service: climate.set_preset_mode
+  data:
+    preset_mode: away
+  target:
+    entity_id: all
+- service: switch.turn_off
+  target:
+    entity_id: switch.voltaire_home_mode
+mode: single
+icon: mdi:home-export-outline

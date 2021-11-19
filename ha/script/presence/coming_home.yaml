@@ -1,0 +1,12 @@
+alias: Coming Home
+sequence:
+- service: climate.set_preset_mode
+  target:
+    entity_id: all
+  data:
+    preset_mode: home
+- service: switch.turn_on
+  target:
+    entity_id: switch.voltaire_home_mode
+mode: single
+icon: mdi:home-import-outline
