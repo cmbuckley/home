@@ -44,28 +44,7 @@ input_text:
   slack_verification_token:
     initial: !secret slack_verification_token
 
-rest_command:
-  slack_api:
-    url: https://slack.com/api/{{ api }}
-    content_type: 'application/json; charset=utf-8'
-    verify_ssl: true
-    method: 'post'
-    timeout: 20
-    headers:
-      Authorization: !secret notify_slack_bearer_header
-    payload: '{{ payload }}'
-  slack_response:
-    url: '{{ response_url }}'
-    content_type: 'application/json; charset-utf-8'
-    verify_ssl: true
-    method: post
-    timeout: 20
-    payload: >
-      {
-        "replace_original": "{{ replace_original if (replace_original is defined) else 'true' | lower }}",
-        "text": "{{ text }}",
-        "blocks": {{ blocks if (blocks is defined) else [] | to_json }}
-      }
+rest_command: !include_dir_named rest_command
 
 switch:
   - platform: rpi_rf

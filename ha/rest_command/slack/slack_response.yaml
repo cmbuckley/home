@@ -1,0 +1,11 @@
+url: '{{ response_url }}'
+content_type: 'application/json; charset-utf-8'
+verify_ssl: true
+method: post
+timeout: 20
+payload: >
+  {
+    "replace_original": "{{ replace_original if (replace_original is defined) else 'true' | lower }}",
+    "text": "{{ text }}",
+    "blocks": {{ blocks if (blocks is defined) else [] | to_json }}
+  }
