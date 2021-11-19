@@ -1,0 +1,5 @@
+name: Living Room Lights
+entities:
+  - switch.01252831ecfabc67ccea_1
+  - switch.01252831ecfabc67ccea_2
+  - switch.01252831ecfabc67ccea_3
