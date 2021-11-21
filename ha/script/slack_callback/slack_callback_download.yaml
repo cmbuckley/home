@@ -8,5 +8,5 @@ sequence:
 - service: rest_command.slack_response
   data_template:
     response_url: '{{ payload.response_url }}'
-    replace_original: true
-    text: 'Started downloading “*{{ payload.actions[0].action_id }}*”.'
+    delete_original: true
+    text: 'Download started: “*{{ payload.actions[0].action_id }}*”'

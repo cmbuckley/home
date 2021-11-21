@@ -6,7 +6,7 @@ trigger:
 action:
   - service: notify.slack
     data:
-      message: 'Download completed: “{{ trigger.event.data.name }}”'
+      message: 'Download completed: “*{{ trigger.event.data.name }}*”'
       target: '#synology'
   - service: transmission.remove_torrent
     data:
