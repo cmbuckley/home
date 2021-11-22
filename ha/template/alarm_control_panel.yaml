@@ -1,0 +1,7 @@
+binary_sensor:
+- name: Front Door
+  device_class: door
+  state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Front Door is Open") }}'
+- name: Garage Door
+  device_class: door
+  state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Garage Door is Open") }}'

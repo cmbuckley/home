@@ -1,0 +1,7 @@
+sensor:
+- name: Someone Home Probability
+  unit_of_measurement: '%'
+  state: '{{ state_attr("binary_sensor.someone_home", "probability") }}'
+- name: Someone Home Probability Threshold
+  unit_of_measurement: '%'
+  state: '{{ state_attr("binary_sensor.someone_home", "probability_threshold") }}'

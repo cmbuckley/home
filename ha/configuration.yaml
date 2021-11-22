@@ -73,15 +73,7 @@ switch:
     email: !secret tapo_username
     password: !secret tapo_password
 
-template:
-  - sensor:
-      - name: Someone Home Probability
-        unit_of_measurement: '%'
-        state: '{{ state_attr("binary_sensor.someone_home", "probability") }}'
-      - name: Someone Home Probability Threshold
-        unit_of_measurement: '%'
-        state: '{{ state_attr("binary_sensor.someone_home", "probability_threshold") }}'
-
+template: !include_dir_list template
 binary_sensor: !include_dir_list binary_sensor
 sensor: !include_dir_list sensor
 frontend:
