@@ -68,6 +68,10 @@ switch:
         pulselength: 417
         code_on: 1397845
         code_off: 1397844
+  - platform: tapo_p100_control
+    ip_address: !secret ip_tapo_outside
+    email: !secret tapo_username
+    password: !secret tapo_password
 
 template:
   - sensor:
