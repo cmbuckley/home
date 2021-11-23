@@ -27,6 +27,11 @@ My [Home Assistant](https://home-assistant.io/) configuration files.
 * [tapo_p100_control](https://github.com/fishbigger/HomeAssistant-Tapo-P100-Control/)
 * [alarmdotcom](https://github.com/uvjustin/alarmdotcom)
 
+## Resources
+
+* [template-entity-row](https://github.com/thomasloven/lovelace-template-entity-row/)
+* [layout-card](https://github.com/thomasloven/lovelace-layout-card)
+
 ## Interesting Config
 
 * [Norien/Home-Assistant-Config](https://github.com/Norien/Home-Assistant-Config/)
