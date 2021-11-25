@@ -1,0 +1,3 @@
+platform: command_line
+name: Next Black Bin Date
+command: awk '/BLACK/{print $2}' /config/shell_command/download_bin_schedule.txt

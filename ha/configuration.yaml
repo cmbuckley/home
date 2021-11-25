@@ -5,6 +5,15 @@ homeassistant:
   internal_url: !secret hass_internal_url
   external_url: !secret hass_external_url
   country: GB
+  customize:
+    sensor.next_bin_date:
+      device_class: date
+    sensor.next_black_bin_date:
+      device_class: date
+    sensor.next_brown_bin_date:
+      device_class: date
+    sensor.next_green_bin_date:
+      device_class: date
 
 google_assistant: !include google_assistant/configuration.yaml
 
@@ -67,6 +76,8 @@ input_text:
     initial: !secret hass_internal_url
   printer_domain:
     initial: !secret printer_domain
+  council_premises:
+    initial: !secret council_premises
 
 rest_command: !include_dir_named rest_command
 switch: !include_dir_list switch

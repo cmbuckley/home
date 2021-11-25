@@ -1,0 +1,11 @@
+id: cron_bin_schedule
+alias: Cron - Bin Schedule
+trigger:
+- platform: time
+  at: '03:20:00'
+condition:
+- condition: time
+  weekday:
+  - sun
+action:
+- service: shell_command.download_bin_schedule
