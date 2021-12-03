@@ -1,0 +1,22 @@
+alias: Slack Callback - Set Alarm
+icon: mdi:bell
+sequence:
+- service: rest_command.slack_response
+  data_template:
+    response_url: '{{ payload.response_url }}'
+    replace_original: true
+    text: '{{ payload.message.text }}'
+    blocks:
+    - type: section
+      text:
+        type: '{{ payload.message.blocks[0].text.type }}'
+        text: '{{ payload.message.blocks[0].text.text }}'
+    - type: context
+      elements:
+        - type: mrkdwn
+          text: '_{{ payload.actions[0].value }} by <@{{ payload.user.id }}>_'
+- condition: template
+  value_template: '{{ payload.actions[0].action_id != "ignore" }}'
+- service_template: 'alarm_control_panel.{{ payload.actions[0].action_id }}'
+  target:
+    entity_id: alarm_control_panel.alarm_com
