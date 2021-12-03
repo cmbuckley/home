@@ -15,6 +15,9 @@ action:
 - service: notify.slack
   data:
     message: ':bell: Someone is at your front door.'
+- condition: state
+  entity_id: binary_sensor.someone_home
+  state: 'on'
 - service: media_player.play_media
   data_template:
     media_content_id: >
