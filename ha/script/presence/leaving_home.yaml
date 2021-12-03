@@ -8,5 +8,35 @@ sequence:
 - service: switch.turn_off
   target:
     entity_id: switch.voltaire_home_mode
+- condition: state
+  entity_id: alarm_control_panel.alarm_com
+  state: disarmed
+- service: notify.slack
+  data:
+    message: ':rotating_light: Switched to Away mode, but alarm is not set!'
+    target: '#jarvis-test'
+    data:
+      blocks:
+      - type: section
+        text:
+          type: plain_text
+          text: ':rotating_light: Switched to Away mode, but alarm is not set!'
+      - type: actions
+        block_id: set_alarm
+        elements:
+        - type: button
+          style: primary
+          text:
+            type: plain_text
+            text: Set It Now
+          action_id: alarm_arm_away
+          value: Alarm was set
+        - type: button
+          style: danger
+          text:
+            type: plain_text
+            text: Leave It
+          action_id: ignore
+          value: Alarm left disarmed
 mode: single
 icon: mdi:home-export-outline

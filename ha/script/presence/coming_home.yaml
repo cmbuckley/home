@@ -8,5 +8,34 @@ sequence:
 - service: switch.turn_on
   target:
     entity_id: switch.voltaire_home_mode
+- condition: state
+  entity_id: alarm_control_panel.alarm_com
+  state: armed_away
+- service: notify.slack
+  data:
+    message: ':house: Welcome home! Do you want to unset the alarm?'
+    target: '#jarvis-test'
+    data:
+      blocks:
+      - type: section
+        text:
+          type: plain_text
+          text: ':house: Welcome home! Do you want to unset the alarm?'
+      - type: actions
+        block_id: set_alarm
+        elements:
+        - type: button
+          style: primary
+          text:
+            type: plain_text
+            text: Unset It Now
+          action_id: alarm_disarm
+          value: Alarm was disarmed
+        - type: button
+          text:
+            type: plain_text
+            text: Leave It
+          action_id: ignore
+          value: Alarm left armed
 mode: single
 icon: mdi:home-import-outline
