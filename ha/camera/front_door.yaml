@@ -1,0 +1,4 @@
+platform: ffmpeg
+name: Front Door
+input: !secret camera_front_stream
+extra_arguments: -pred 1 -rtsp_transport tcp

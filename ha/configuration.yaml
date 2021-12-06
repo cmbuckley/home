@@ -34,6 +34,10 @@ alarm_control_panel:
     username: !secret alarm_username
     password: !secret alarm_password
 
+# Cameras
+ffmpeg:
+camera: !include_dir_list camera
+
 notify:
   - name: Slack
     platform: slack

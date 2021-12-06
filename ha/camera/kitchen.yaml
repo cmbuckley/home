@@ -1,0 +1,4 @@
+platform: ffmpeg
+name: Kitchen
+input: !secret camera_kitchen_stream
+extra_arguments: -pred 1 -rtsp_transport tcp
