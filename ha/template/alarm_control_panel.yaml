@@ -5,3 +5,18 @@ binary_sensor:
 - name: Garage Door
   device_class: door
   state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Garage Door is Open") }}'
+- name: Garage Motion
+  device_class: motion
+  state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Garage is Activated") }}'
+- name: Hall Motion
+  device_class: motion
+  state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Hall is Activated") }}'
+- name: Kitchen Motion
+  device_class: motion
+  state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Kitchen is Activated") }}'
+- name: Landing Motion
+  device_class: motion
+  state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Landing is Activated") }}'
+- name: Living Room Motion
+  device_class: motion
+  state: '{{ state_attr("alarm_control_panel.alarm_com", "sensor_status") | regex_search("Living room is Activated") }}'
