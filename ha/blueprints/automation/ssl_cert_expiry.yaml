@@ -1,0 +1,36 @@
+blueprint:
+  name: SSL Certificate Expiry
+  description: Notify when a certificate is about to expire
+  domain: automation
+  input:
+    cert_expiry_sensor:
+      name: Certificate Expiry Sensor
+      description: The cert_expiry sensor to use
+      selector:
+        entity:
+          domain: sensor
+          device_class: timestamp
+    cert_expiry_threshold:
+      name: Expiry Threshold
+      description: The threshold used to trigger the notification
+      default: 7
+      selector:
+        number:
+          min: 1
+          max: 30
+          unit_of_measurement: days
+variables:
+  cert_expiry_sensor: !input cert_expiry_sensor
+trigger:
+- platform: numeric_state
+  entity_id: !input cert_expiry_sensor
+  value_template: >
+    {{ ((as_timestamp(states(cert_expiry_sensor), 0) - as_timestamp(now())) / 86400) }}
+  below: !input cert_expiry_threshold
+action:
+- service: notify.slack
+  data:
+    message: >
+      {%- set cert_name = state_attr(cert_expiry_sensor, 'friendly_name') | regex_replace('Cert Expiry Timestamp \(([^)]+)\)', '\\1') -%}
+      The certificate for {{ cert_name }} will expire in {{ ((as_timestamp(states(cert_expiry_sensor), 0) - as_timestamp(now())) / 86400) | int }} days.
+mode: single

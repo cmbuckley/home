@@ -1,0 +1,6 @@
+id: ssl_diskstation
+alias: SSL Cert Expiry - DiskStation
+use_blueprint:
+  path: ssl_cert_expiry.yaml
+  input:
+    cert_expiry_sensor: !secret cert_expiry_sensor_diskstation
