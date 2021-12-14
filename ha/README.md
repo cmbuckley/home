@@ -24,7 +24,7 @@ My [Home Assistant](https://home-assistant.io/) configuration files.
 ## Custom Components
 
 * [alarmdotcom](https://github.com/uvjustin/alarmdotcom) (0.1.11)
-* [edgeos](https://github.com/elad-bar/ha-edgeos) (1.1.5)
+* [edgeos](https://github.com/elad-bar/ha-edgeos) (1.1.7)
 * [tapo_p100_control](https://github.com/fishbigger/HomeAssistant-Tapo-P100-Control/) (1.0.0)
 
 ## Resources
