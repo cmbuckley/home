@@ -1,16 +1,18 @@
 # Home Assistant
 
+Scripts for smart home. Almost everything is managed via Home Assistant in [ha](ha) directory, with some other legacy/ancilliary scripts elsewhere.
+
 ## To Do
 
 Script the following:
 
 * Update (below)
-** Should do regular updates, ideally with a canary image and testing the config against the new version
-* Nightly backups
+  * Should do regular updates, ideally with a canary image and testing the config against the new version
+* Nightly backups of DB
 
 ## Other Things
 
-https://community.home-assistant.io/t/complete-guide-on-setting-up-grafana-influxdb-with-home-assistant-using-official-docker-images/42860
+* [Grafana](https://community.home-assistant.io/t/complete-guide-on-setting-up-grafana-influxdb-with-home-assistant-using-official-docker-images/42860)
 
 ## Updating
 
