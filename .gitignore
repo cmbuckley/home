@@ -1,6 +1,11 @@
-image
 node_modules
-.env
-.HA_VERSION
-scripts/jarvis/*.json
 __pycache__
+.env
+
+# Script ignores
+scripts/jarvis/*.json
+
+# Home Assistant ignores
+.HA_VERSION
+webostv.conf
+image
