@@ -1,0 +1,13 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/raspberrypi4-homeassistant:stable
+    network_mode: host
+    volumes:
+      - ./ha:/config:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/letsencrypt:/ssl:ro
+    devices:
+      - /dev/gpiomem
+    restart: unless-stopped
