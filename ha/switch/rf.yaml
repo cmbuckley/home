@@ -1,0 +1,19 @@
+platform: rpi_rf
+gpio: 17
+switches:
+  rf_plug_1:
+    pulselength: 417
+    code_on: 1381717
+    code_off: 1381716
+  rf_plug_2:
+    pulselength: 417
+    code_on: 1394005
+    code_off: 1394004
+  rf_plug_3:
+    pulselength: 417
+    code_on: 1397077
+    code_off: 1397076
+  rf_plug_4:
+    pulselength: 417
+    code_on: 1397845
+    code_off: 1397844

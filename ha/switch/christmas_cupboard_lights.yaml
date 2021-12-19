@@ -1,0 +1,4 @@
+platform: tapo_p100_control
+ip_address: !secret ip_tapo_christmas_cupboard_lights
+email: !secret tapo_username
+password: !secret tapo_password
