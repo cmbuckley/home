@@ -1,0 +1,19 @@
+project_id: !secret google_project_id
+service_account: !include service_account.json
+report_state: true
+exposed_domains:
+- switch
+- light
+entity_config:
+  switch.rf_plug_1:
+    expose: false
+  switch.rf_plug_2:
+    expose: false
+  switch.rf_plug_3:
+    expose: false
+  switch.rf_plug_4:
+    expose: false
+  switch.transmission_switch:
+    expose: false
+  switch.transmission_turtle_mode:
+    expose: false

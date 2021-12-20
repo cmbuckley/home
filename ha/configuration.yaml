@@ -1,6 +1,8 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
+google_assistant: !include google_assistant/configuration.yaml
+
 http:
   server_port: 443
   ssl_key: !secret hass_ssl_key
