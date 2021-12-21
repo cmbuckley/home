@@ -1,5 +1,9 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
+homeassistant:
+  name: !secret home_name
+  internal_url: !secret hass_internal_url
+  external_url: !secret hass_external_url
 
 google_assistant: !include google_assistant/configuration.yaml
 

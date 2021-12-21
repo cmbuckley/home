@@ -14,12 +14,12 @@ observations:
   to_state: not_home
   prob_given_true: 0.04
   prob_given_false: 0.99
-- entity_id: binary_sensor.edgeos_device_lgwebostv
+- entity_id: media_player.living_room_tv
   platform: state
   to_state: on
   prob_given_true: 0.25
   prob_given_false: 0
-- entity_id: binary_sensor.edgeos_device_lgwebostv
+- entity_id: media_player.living_room_tv
   platform: state
   to_state: off
   prob_given_true: 0.75

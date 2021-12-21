@@ -19,6 +19,8 @@ blueprint:
           min: 1
           max: 30
           unit_of_measurement: days
+trigger_variables:
+  cert_expiry_sensor: !input cert_expiry_sensor
 variables:
   cert_expiry_sensor: !input cert_expiry_sensor
 trigger:
