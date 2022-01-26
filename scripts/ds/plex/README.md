@@ -14,11 +14,11 @@ When setting HTTPS to enforced, rather than HTTP redirecting, it simply refuses 
 So need to update the desktop icon:
 
 ```
-sed -i 's/http/https/' /usr/syno/synoman/webman/3rdparty/plex/config
+sudo sed -i 's/http/https/' /usr/syno/synoman/webman/3rdparty/PlexMediaServer/config
 ```
 
 Need to restart nginx afterwards:
 
 ```
-sudo synoservice --restart nginx
+sudo synosystemctl restart nginx
 ```
