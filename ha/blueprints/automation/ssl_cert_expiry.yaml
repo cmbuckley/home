@@ -34,5 +34,9 @@ action:
   data:
     message: >
       {%- set cert_name = state_attr(cert_expiry_sensor, 'friendly_name') | regex_replace('Cert Expiry Timestamp \(([^)]+)\)', '\\1') -%}
-      The certificate for {{ cert_name }} will expire in {{ ((as_timestamp(states(cert_expiry_sensor), 0) - as_timestamp(now())) / 86400) | int }} days.
+      {%- if state_attr(cert_expiry_sensor, 'is_valid') -%}
+        The certificate for {{ cert_name }} will expire in {{ ((as_timestamp(states(cert_expiry_sensor), 0) - as_timestamp(now())) / 86400) | int }} days.
+      {%- else -%}
+        The certificate for {{ cert_name }} is invalid: {{ state_attr(cert_expiry_sensor, 'error') }}
+      {%- endif -%}
 mode: single
