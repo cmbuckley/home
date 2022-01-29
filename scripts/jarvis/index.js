@@ -2,7 +2,6 @@ require('dotenv').config();
 const Pino = require('pino');
 const SlackEmitter = require('./slack');
 const trainsCommand = require('./trains');
-const alarmHandler = require('./alarm');
 
 const logger = Pino({
     level: 'debug',
@@ -31,18 +30,4 @@ trainsCommand(slack, {
     defaultFrom: 'LDS',
     defaultTo: 'HFX',
     railToken: process.env.RAIL_TOKEN,
-});
-
-alarmHandler(slack, {
-    logger: logger,
-    email: {
-        username: process.env.GMAIL_USERNAME,
-        password: process.env.GMAIL_PASSWORD,
-        from: 'donotreply@smart-home.adt.co.uk',
-        subject: 'Alarm Scenario',
-    },
-    channel: {
-        default: 'home-events',
-        error: 'jarvis-test',
-    },
 });
