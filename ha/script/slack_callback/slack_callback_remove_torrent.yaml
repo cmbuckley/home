@@ -1,0 +1,23 @@
+alias: Slack Callback - Remove Torrent
+icon: mdi:trash-can-outline
+sequence:
+- service: rest_command.slack_response
+  data_template:
+    response_url: '{{ payload.response_url }}'
+    replace_original: true
+    text: '{{ payload.message.text }}'
+    blocks:
+    - type: section
+      text:
+        type: '{{ payload.message.blocks[0].text.type }}'
+        text: '{{ payload.message.blocks[0].text.text }}'
+    - type: context
+      elements:
+        - type: mrkdwn
+          text: '_Torrent removed by <@{{ payload.user.id }}>_'
+- condition: template
+  value_template: '{{ payload.actions[0].action_id != "ignore" }}'
+- service_template: 'transmission.{{ payload.actions[0].action_id }}'
+  data:
+    name: Transmission
+    id: '{{ payload.actions[0].value }}'

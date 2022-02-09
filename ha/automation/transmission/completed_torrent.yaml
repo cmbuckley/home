@@ -8,7 +8,19 @@ action:
     data:
       message: 'Download completed: “*{{ trigger.event.data.name }}*”'
       target: '#synology'
-  - service: transmission.remove_torrent
-    data:
-      name: Transmission
-      id: '{{ trigger.event.data.id }}'
+      data:
+        blocks:
+        - type: section
+          text:
+            type: mrkdwn
+            text: 'Download completed: “*{{ trigger.event.data.name }}*”'
+        - type: actions
+          block_id: remove_torrent
+          elements:
+          - type: button
+            style: primary
+            text:
+              type: plain_text
+              text: Remove Torrent
+            action_id: remove_torrent
+            value: '{{ trigger.event.data.id }}'
