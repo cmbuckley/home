@@ -20,4 +20,4 @@ sequence:
 - service_template: 'transmission.{{ payload.actions[0].action_id }}'
   data:
     name: Transmission
-    id: '{{ payload.actions[0].value }}'
+    id: '{{ payload.actions[0].value[3:] | int }}'

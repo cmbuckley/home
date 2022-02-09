@@ -23,4 +23,4 @@ action:
               type: plain_text
               text: Remove Torrent
             action_id: remove_torrent
-            value: '{{ trigger.event.data.id }}'
+            value: 'id:{{ trigger.event.data.id }}'
