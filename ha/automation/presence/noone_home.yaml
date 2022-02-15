@@ -4,6 +4,8 @@ trigger:
 - platform: state
   entity_id: group.chris_emilia
   to: not_home
+  for:
+    minutes: 5
 action:
 - service: script.leaving_home
 mode: single
