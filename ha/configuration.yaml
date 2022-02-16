@@ -72,6 +72,10 @@ input_text:
     initial: !secret slack_verification_token
   hass_internal_url:
     initial: !secret hass_internal_url
+input_boolean:
+  display_christmas:
+    name: Dashboard Christmas Lights
+    icon: mdi:pine-tree
 
 rest_command: !include_dir_named rest_command
 switch: !include_dir_list switch
