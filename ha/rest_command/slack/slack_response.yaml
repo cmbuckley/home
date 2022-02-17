@@ -8,6 +8,6 @@ payload: >
     "replace_original": {{ (replace_original if (replace_original is defined) else 'false') | lower }},
     "delete_original": {{ (delete_original if (delete_original is defined) else 'false') | lower }},
     "response_type": "{{ response_type if (response_type is defined) else 'in_channel' }}",
-    "text": "{{ text }}",
+    "text": "{{ text if (text is defined) else '' }}",
     "blocks": {{ blocks if (blocks is defined) else [] | to_json }}
   }
