@@ -19,13 +19,16 @@ Script the following:
 Some useful commands, not necessarily in this order:
 
 ```bash
+# if tearing things down and backing up
 docker-compose down
 docker rm homeassistant
 cp -r ha ha-bak
 docker commit -p $(docker ps -f name=homeassistant -q) homeassistant-backup
 docker save homeassistant-backup | gzip > homeassistant.tar.gz
+
+# standard update
 docker-compose pull
-docker-compose up -d
-docker logs homeassistant
+docker-compose up -d --remove-orphans
+docker logs -f homeassistant
 docker system prune -a
 ```
