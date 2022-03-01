@@ -5,7 +5,7 @@ domain="$1"
 
 key="/ssl/live/$domain/privkey.pem"
 crt="/ssl/live/$domain/fullchain.pem"
-pfx="$(mktemp -t printer-XXXX.pfx)"
+pfx="$(mktemp -t printer-pfx-XXXXXX)"
 password="$(openssl rand -base64 12)"
 
 # URL for HP EWS printers
