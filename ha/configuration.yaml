@@ -72,6 +72,8 @@ input_text:
     initial: !secret slack_verification_token
   hass_internal_url:
     initial: !secret hass_internal_url
+  printer_domain:
+    initial: !secret printer_domain
 input_boolean:
   display_christmas:
     name: Dashboard Christmas Lights
@@ -88,4 +90,5 @@ automation: !include_dir_list automation
 group: !include_dir_named group
 script: !include_dir_named script
 scene: !include scenes.yaml
+shell_command: !include_dir_named shell_command
 recorder: !include recorder.yaml

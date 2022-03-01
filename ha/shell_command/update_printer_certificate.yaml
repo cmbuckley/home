@@ -1,0 +1,1 @@
+/config/shell_command/update_printer_certificate.sh "{{ states('input_text.printer_domain') }}"
