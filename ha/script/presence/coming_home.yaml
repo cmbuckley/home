@@ -1,8 +1,7 @@
 alias: Coming Home
 sequence:
 - service: climate.set_preset_mode
-  target:
-    entity_id: all
+  entity_id: all
   data:
     preset_mode: home
 - service: switch.turn_on
