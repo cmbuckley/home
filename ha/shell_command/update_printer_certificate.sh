@@ -13,3 +13,4 @@ upload_url="https://$domain/Security/DeviceCertificates/NewCertWithPassword/Uplo
 
 openssl pkcs12 -export -out "$pfx" -inkey "$key" -in "$crt" -passout "pass:$password"
 curl -Sskv "$upload_url" -F "certificate=@$pfx" -F "password=$password"
+rm "$pfx"
