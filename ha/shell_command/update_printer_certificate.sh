@@ -14,7 +14,10 @@ upload_url="https://$domain/Security/DeviceCertificates/NewCertWithPassword/Uplo
 local_mod="$(openssl x509 -modulus -noout -in "$crt")"
 remote_mod="$(openssl s_client -host $domain -port 443 <<< Q 2>/dev/null | openssl x509 -modulus -noout)"
 
-if [ "$local_mod" != "$remote_mod" ]; then
+if [ "$local_mod" == "$remote_mod" ]; then
+    echo "Server certificate matches local certificate"
+else
+    echo "Server certificate needs to be updated"
     openssl pkcs12 -export -out "$pfx" -inkey "$key" -in "$crt" -passout "pass:$password"
     curl -Sskv "$upload_url" -F "certificate=@$pfx" -F "password=$password"
     rm "$pfx"

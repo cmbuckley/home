@@ -4,7 +4,7 @@ trigger:
 - platform: time
   at: '04:20:00'
 condition:
-- condition: template
-  value_template: '{{ now().day == 1 }}'
+- condition: time
+  weekday: sun
 action:
 - service: shell_command.update_printer_certificate
