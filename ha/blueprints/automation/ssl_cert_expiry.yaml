@@ -34,9 +34,14 @@ action:
   data:
     message: >
       {%- set cert_name = state_attr(cert_expiry_sensor, 'friendly_name') | regex_replace('Cert Expiry Timestamp \(([^)]+)\)', '\\1') -%}
+      {%- set cert_link = '<https://' ~ cert_name ~ '|' ~ cert_name ~ '>' -%}
+
       {%- if state_attr(cert_expiry_sensor, 'is_valid') -%}
-        The certificate for {{ cert_name }} will expire in {{ ((as_timestamp(states(cert_expiry_sensor), 0) - as_timestamp(now())) / 86400) | int }} days.
+        The certificate for {{ cert_link }} will expire in {{ ((as_timestamp(states(cert_expiry_sensor), 0) - as_timestamp(now())) / 86400) | int }} days.
+      {%- elif is_state(cert_expiry_sensor, 'unavailable') -%}
+        The certificate for {{ cert_link }} could not be retrieved.
       {%- else -%}
-        The certificate for {{ cert_name }} is invalid: {{ state_attr(cert_expiry_sensor, 'error') }}
+        {%- set error = state_attr(cert_expiry_sensor, 'error') -%}
+        The certificate for {{ cert_link }} is invalid: {{ 'Unknown error' if (error == None) else error }}
       {%- endif -%}
 mode: single
