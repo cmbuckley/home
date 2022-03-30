@@ -14,4 +14,10 @@ sequence:
 - service: rest_command.slack_response
   data_template:
     response_url: '{{ payload.response_url }}'
-    text: 'Download started: “*{{ payload.actions[0].action_id }}*”'
+    text: 'Download started: “{{ payload.actions[0].action_id }}”'
+    blocks:
+    - type: section
+      text:
+        type: mrkdwn
+        text: 'Download started: “*{{ payload.actions[0].action_id }}*”'
+        verbatim: true

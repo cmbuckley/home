@@ -6,7 +6,7 @@ trigger:
 action:
   - service: notify.slack
     data:
-      message: 'Download completed: “*{{ trigger.event.data.name }}*”'
+      message: 'Download completed: “{{ trigger.event.data.name }}”'
       target: '#synology'
       data:
         blocks:
@@ -14,6 +14,7 @@ action:
           text:
             type: mrkdwn
             text: 'Download completed: “*{{ trigger.event.data.name }}*”'
+            verbatim: true
         - type: actions
           block_id: remove_torrent
           elements:
