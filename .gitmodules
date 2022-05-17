@@ -1,3 +1,0 @@
-[submodule "scripts/ds/acme"]
-	path = scripts/ds/acme
-	url = https://github.com/acmesh-official/acme.sh.git

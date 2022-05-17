@@ -1,7 +1,9 @@
-# Should export the following vars: CF_Token, CF_Account_ID, CF_Zone_ID
+# Needed for issue: CF_Token, CF_Account_ID, CF_Zone_ID
+# Needed for deploy: SYNO_Username, SYNO_Password
 source ${BASH_SOURCE%/*}/issue.env
-domain=$1
-sslbase=/usr/syno/etc/certificate/_archive
-ssldir="$sslbase/$(cat $sslbase/DEFAULT)"
 
-${BASH_SOURCE%/*}/../acme/acme.sh --debug --force --issue --dns dns_cf -d $domain --fullchain-file $ssldir/fullchain.pem --key-file $ssldir/privkey.pem --reloadcmd "synosystemctl reload nginx"
+acme=/usr/local/share/acme.sh
+domain=$1
+
+$acme/acme.sh --debug --issue  --home $acme -d $domain --dns dns_cf
+$acme/acme.sh --debug --deploy --home $acme -d $domain --deploy-hook synology_dsm

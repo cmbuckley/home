@@ -1,13 +1,14 @@
+acme=/usr/local/share/acme.sh
 domain=$1
 password=$2
 
 echo '------------------------------------------------------------------------------'
 
-${BASH_SOURCE%/*}/../acme/acme.sh --renew -d $domain
+$acme/acme.sh --cron --upgrade --home $acme
 
 if [ $? -eq 0 ]; then
-    ${BASH_SOURCE%/*}/../acme/acme.sh --force --toPkcs -d $domain --password $password \
-        && mv /root/.acme.sh/$domain/$domain.pfx /etc/ssl/private \
+    $acme/acme.sh --force --toPkcs --home $acme -d $domain --password $password \
+        && mv $acme/$domain/$domain.pfx /etc/ssl/private \
         && chmod a+r /etc/ssl/private/$domain.pfx \
         && synopkg restart PlexMediaServer
 fi
