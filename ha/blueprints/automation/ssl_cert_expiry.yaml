@@ -24,6 +24,9 @@ trigger_variables:
 variables:
   cert_expiry_sensor: !input cert_expiry_sensor
 trigger:
+- platform: time
+  at: '04:45:00'
+condition:
 - platform: numeric_state
   entity_id: !input cert_expiry_sensor
   value_template: >
