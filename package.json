@@ -18,7 +18,7 @@
   "homepage": "https://github.com/cmbuckley/home#readme",
   "dependencies": {
     "@digitalgarage/mail-listener": "^1.0.1",
-    "@slack/events-api": "^2.3.0",
+    "@slack/events-api": "^3.0.1",
     "@slack/web-api": "^5.2.1",
     "@slack/webhook": "^5.0.2",
     "dotenv": "^8.1.0",
