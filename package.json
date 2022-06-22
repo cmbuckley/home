@@ -30,7 +30,7 @@
     "moment-timezone": "^0.5.26",
     "national-rail-darwin-promise": "^1.0.2",
     "neat-csv": "^5.1.0",
-    "pino": "^5.13.5",
+    "pino": "^8.1.0",
     "qs": "^6.9.0"
   },
   "devDependencies": {
