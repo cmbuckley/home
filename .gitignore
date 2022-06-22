@@ -1,11 +1,5 @@
-node_modules
-__pycache__
-.env
-
-# Script ignores
-scripts/jarvis/*.json
-
 # Home Assistant ignores
+__pycache__
 .HA_VERSION
 webostv.conf
 image
