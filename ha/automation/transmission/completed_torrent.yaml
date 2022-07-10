@@ -7,7 +7,7 @@ action:
   - service: notify.slack
     data:
       message: 'Download completed: “{{ trigger.event.data.name }}”'
-      target: '#synology'
+      target: '#downloads'
       data:
         blocks:
         - type: section
