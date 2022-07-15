@@ -1,31 +1,56 @@
-function copyEvents() {
+function doGet() {
+  return HtmlService.createHtmlOutput('<h1>Hello, world!</h1>');
+}
+
+function copyAll() {
+  copyEvents('source.calendar@gmail.com', '[Other] ', CalendarApp.EventColor.PALE_RED);
+}
+
+function copyEvents(sourceEmail, titlePrefix, eventColor) {
   // source and target calendars
-  var source = CalendarApp.getCalendarById('source@gmail.com');
-  var target = CalendarApp.getCalendarById('target@gmail.com');
+  let source = CalendarApp.getCalendarById(sourceEmail);
+  let target = CalendarApp.getCalendarById(Session.getActiveUser().getEmail());
+  const syncDays = 14;
 
   // start and end dates
-  var startDate = new Date();
-  var endDate   = new Date();
-  endDate.setDate(startDate.getDate() + 365);
+  let startDate = new Date();
+  let endDate   = new Date();
+  endDate.setDate(startDate.getDate() + syncDays);
+
+  // delete and recreate in case things move
+  cleanup(syncDays, titlePrefix);
 
   // copy all events
   source.getEvents(startDate, endDate).forEach(function (event) {
-    const tagCopied = 'cce-copied';
+    const title = titlePrefix + event.getTitle();
+    console.log('Copying event: ' + event.getTitle() + ' (' + event.getStartTime().toLocaleString('en-GB') + ')');
+    let newEvent;
 
-    // ignore an event we’ve already copied
-    if (event.getTag(tagCopied) == 'true') {
-      return;
-    }
-
-    var title = event.getTitle();
     if (event.isAllDayEvent()) {
-      target.createAllDayEvent(title, event.getAllDayStartDate());
+      newEvent = target.createAllDayEvent(title, event.getAllDayStartDate());
     }
     else {
-      target.createEvent(title, event.getStartTime(), event.getEndTime());
+      newEvent = target.createEvent(title, event.getStartTime(), event.getEndTime());
     }
 
-    event.setTag(tagCopied, 'true'); // so we don't copy it again
+    newEvent.setColor(eventColor);
+    newEvent.setVisibility(CalendarApp.Visibility.PRIVATE);
     Utilities.sleep(250);
+  });
+}
+
+function cleanup(daysAhead, titlePrefix) {
+  let calendar = CalendarApp.getCalendarById(Session.getActiveUser().getEmail());
+  
+  let startDate = new Date();
+  let endDate   = new Date();
+  endDate.setDate(startDate.getDate() + daysAhead);
+
+  calendar.getEvents(startDate, endDate).forEach(function (event) {
+    if (event.getTitle().startsWith(titlePrefix)) {
+      console.log('Deleting event: ' + event.getTitle() + ' (' + event.getStartTime().toLocaleString('en-GB') + ')');
+      event.deleteEvent();
+      Utilities.sleep(250);
+    }
   });
 }
