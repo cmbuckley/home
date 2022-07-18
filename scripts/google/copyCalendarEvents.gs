@@ -3,10 +3,10 @@ function doGet() {
 }
 
 function copyAll() {
-  copyEvents('source.calendar@gmail.com', '[Other] ', CalendarApp.EventColor.PALE_RED);
+  copyEvents('source.calendar@gmail.com', '[Other] ', CalendarApp.EventColor.PALE_RED, CalendarApp.Visibility.PRIVATE);
 }
 
-function copyEvents(sourceEmail, titlePrefix, eventColor) {
+function copyEvents(sourceEmail, titlePrefix, eventColor, eventVisibility) {
   // source and target calendars
   let source = CalendarApp.getCalendarById(sourceEmail);
   let target = CalendarApp.getCalendarById(Session.getActiveUser().getEmail());
@@ -34,7 +34,7 @@ function copyEvents(sourceEmail, titlePrefix, eventColor) {
     }
 
     newEvent.setColor(eventColor);
-    newEvent.setVisibility(CalendarApp.Visibility.PRIVATE);
+    newEvent.setVisibility(eventVisibility || CalendarApp.Visibility.DEFAULT);
     Utilities.sleep(250);
   });
 }
