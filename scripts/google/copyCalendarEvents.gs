@@ -1,16 +1,35 @@
+const config = {
+  'source.calendar@gmail.com': {
+    prefix: 'Example',
+    color: CalendarApp.EventColor.PALE_RED,
+    visibility: 'private'
+  },
+};
+
 function doGet() {
   return HtmlService.createHtmlOutput('<h1>Hello, world!</h1>');
 }
 
-function copyAll() {
-  copyEvents('source.calendar@gmail.com', '[Other] ', CalendarApp.EventColor.PALE_RED, CalendarApp.Visibility.PRIVATE);
+function onCalendarChanged(trigger) {
+  copyEvents(trigger.calendarId);
 }
 
-function copyEvents(sourceEmail, titlePrefix, eventColor, eventVisibility) {
-  // source and target calendars
-  let source = CalendarApp.getCalendarById(sourceEmail);
-  let target = CalendarApp.getCalendarById(Session.getActiveUser().getEmail());
-  const syncDays = 14;
+function copyAll() {
+  Object.keys(config).forEach(copyEvents);
+}
+
+function copyEvents(sourceId) {
+  // avoid multiple scripts running at the same time
+  const lock = LockService.getScriptLock();
+  lock.tryLock(1000);
+  if (!lock.hasLock()) {
+    console.log('Process already running');
+    return;
+  }
+
+  console.log('Copying events from ' + sourceId);
+  const summaryPrefix = (config[sourceId].prefix ? `[${config[sourceId].prefix}] ` : '');
+  const syncDays = config[sourceId].syncDays || 14;
 
   // start and end dates
   let startDate = new Date();
@@ -18,25 +37,36 @@ function copyEvents(sourceEmail, titlePrefix, eventColor, eventVisibility) {
   endDate.setDate(startDate.getDate() + syncDays);
 
   // delete and recreate in case things move
-  cleanup(syncDays, titlePrefix);
+  cleanup(syncDays, summaryPrefix);
 
-  // copy all events
-  source.getEvents(startDate, endDate).forEach(function (event) {
-    const title = titlePrefix + event.getTitle();
-    console.log('Copying event: ' + event.getTitle() + ' (' + event.getStartTime().toLocaleString('en-GB') + ')');
-    let newEvent;
-
-    if (event.isAllDayEvent()) {
-      newEvent = target.createAllDayEvent(title, event.getAllDayStartDate());
-    }
-    else {
-      newEvent = target.createEvent(title, event.getStartTime(), event.getEndTime());
-    }
-
-    newEvent.setColor(eventColor);
-    newEvent.setVisibility(eventVisibility || CalendarApp.Visibility.DEFAULT);
-    Utilities.sleep(250);
+  // get all events
+  const listResponse = Calendar.Events.list(sourceId, {
+    timeMin: startDate.toISOString(),
+    timeMax: endDate.toISOString(),
+    singleEvents: true,
   });
+
+  // loop over and copy
+  listResponse.items.forEach(function (event) {
+    console.log('Copying event: ' + event.summary + ' (' + event.start + ')');
+
+    const n = Calendar.Events.insert({
+      start:          event.start,
+      end:            event.end,
+      summary:        summaryPrefix + event.summary,
+      description:    event.description,
+      conferenceData: event.conferenceData,
+      colorId:        config[sourceId].color || 0,
+      visibility:     config[sourceId].visibility || event.visibility
+    }, Session.getActiveUser().getEmail(), {
+      conferenceDataVersion: 1
+    });
+
+    Utilities.sleep(500);
+  });
+
+  lock.releaseLock();
+  console.log('All events copied');
 }
 
 function cleanup(daysAhead, titlePrefix) {
@@ -49,8 +79,12 @@ function cleanup(daysAhead, titlePrefix) {
   calendar.getEvents(startDate, endDate).forEach(function (event) {
     if (event.getTitle().startsWith(titlePrefix)) {
       console.log('Deleting event: ' + event.getTitle() + ' (' + event.getStartTime().toLocaleString('en-GB') + ')');
-      event.deleteEvent();
-      Utilities.sleep(250);
+      try {
+        event.deleteEvent();
+      } catch (e) {
+        console.log('Failed to delete: ' + e);
+      }
+      Utilities.sleep(500);
     }
   });
 }
