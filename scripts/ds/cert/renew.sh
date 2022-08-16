@@ -4,7 +4,8 @@ password=$2
 
 echo '------------------------------------------------------------------------------'
 
-$acme/acme.sh --cron --upgrade --home $acme
+$acme/acme.sh --upgrade --home $acme
+$acme/acme.sh --cron --home $acme
 
 if [ $? -eq 0 ]; then
     $acme/acme.sh --force --toPkcs --home $acme -d $domain --password $password \
