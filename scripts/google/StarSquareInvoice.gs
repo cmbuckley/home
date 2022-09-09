@@ -1,98 +1,113 @@
-  /**
-   * New invoice factory
-   * 
-   * @param string templateName
-   * @param string recipient    email address
-   * @param string invoiceMonth 1-based month number
-   */
-function newInvoice(templateName, recipient, invoiceMonth) {
-  return new StarSquareInvoice(templateName, recipient, invoiceMonth);
+/**
+ * Invoice factory
+ * 
+ * @param object options
+ * @return StarSquareInvoice
+ */
+function create(options) {
+  return new StarSquareInvoice(options);
 }
 
 class StarSquareInvoice {
-  /**
-   * @param string templateName
-   * @param string recipient    email address
-   * @param string invoiceMonth 1-based month number
-   */
-  constructor(templateName, recipient, invoiceMonth) {
-    this.templateName = templateName;
-    this.recipient = recipient;
-
-    if (this.shouldCreateInvoice(invoiceMonth)) {
-      this.createInvoice();
-    } else {
-      Logger.log('Not creating invoice this month');
-    }
-  }
-
-  /**
-   * Whether the invoice should be created this month
-   * 
-   * @return bool
-   */
-  shouldCreateInvoice(invoiceMonth) {
-    let date = new Date();
-    return (date.getMonth() == (invoiceMonth - 1));
+  constructor(options) {
+    this.options = options;
   }
 
   /**
    * Create and mail the invoice
    */
-  createInvoice() {
-    const template = DriveApp.getFilesByName(this.templateName + ' Template').next(),
-      files = template.getParents().next().getFiles();
-    let invoiceNum = 1;
-
-    // find out invoice number
-    while (files.hasNext()) {
-      if (/^010/.test(files.next().getName())) {
-        invoiceNum++;
-      }
+  send() {
+    if (!this.shouldSendInvoice()) {
+      Logger.log('Not sending invoice this month');
+      return;
     }
 
-    // create invoice from template
-    const invoiceName = '01' + ('0000' + invoiceNum).substr(-4);
-    Logger.log('Creating invoice ' + invoiceName);
+    const invoices = this.options.invoices.map(this.createInvoice.bind(this));
+    let mails = [];
 
-    const invoice = template.makeCopy(invoiceName + ' - ' + this.templateName + ' ' + this.getDate());
-    const spreadsheet = SpreadsheetApp.openById(invoice.getId());
-    spreadsheet.getRangeByName('Invoice_ID').setValue(invoiceNum);
-    spreadsheet.getRangeByName('Invoice_Date').setValue(new Date());
+    const mailOptions = {
+      subject: this.options.subject,
+      body: this.options.body,
+      name: this.options.from,
+      attachments: invoices.map(i => this.getAttachment(i, this.options.attachmentOptions)),
+    };
 
-    // send email with spreadsheet as attachment
-    MailApp.sendEmail(this.recipient, 'Invoice ' + invoiceName + ' Available', this.getEmailBody(), {
-      name: 'StarSquare Billing',
-      attachments: [this.getAttachment(spreadsheet)]
-    });
+    if (this.options.separateTo) {
+      mails = this.options.separateTo.map(email => Object.assign({}, mailOptions, {to: email}));
+    } else {
+      mails = [Object.assign({}, mailOptions, {
+        to: this.emailList(this.options.to),
+        cc: this.emailList(this.options.cc),
+        bcc: this.emailList(this.options.bcc),
+      })];
+    }
+
+    mails.forEach(m => MailApp.sendEmail(m));
   }
-  
+
+  /**
+   * Convert a list of emails to a comma-separated list
+   * 
+   * @param string|array|null emails
+   * @return string|null
+   */
+  emailList(emails) {
+    return ((emails && Array.isArray(emails)) ? emails.join(',') : emails);
+  }
+
+  /**
+   * Whether the invoice should be send this month
+   * 
+   * @return bool
+   */
+  shouldSendInvoice() {
+    let date = new Date();
+    return (Array.isArray(this.options.months) ? this.options.months.includes(date.getMonth() + 1) : true);
+  }
+
+  /**
+   * Create the invoice spreadsheet
+   * 
+   * @param object spec
+   * @return Spreadsheet
+   */
+  createInvoice(spec) {
+    const template = DriveApp.getFilesByName(spec.template).next(),
+      filename = (spec.filename || spec.template) + ' - ' + this.getFileDate();
+
+    // create invoice from template
+    Logger.log('Creating invoice for ' + filename);
+
+    const invoice = template.makeCopy(filename);
+    const spreadsheet = SpreadsheetApp.openById(invoice.getId());
+    const namedRanges = spreadsheet.getNamedRanges().map(r => r.getName());
+
+    Object.keys(spec.values).forEach(range => {
+      const func = (namedRanges.includes(range) ? 'getRangeByName' : 'getRange');
+      spreadsheet[func](range).setValue(spec.values[range]);
+    });
+
+    return spreadsheet;
+  }
+
   /**
    * Get date in dd.mm.yy format
+   * 
+   * @return string
    */
-  getDate() {
+  getFileDate() {
     const date = new Date();
     return [
-      ('0' + date.getDate()).substr(-2),
-      ('0' + (date.getMonth() + 1)).substr(-2),
-      (date.getFullYear() + '').substr(-2)
+      ('0' + date.getDate()).slice(-2),
+      ('0' + (date.getMonth() + 1)).slice(-2),
+      (date.getFullYear() + '').slice(-2)
     ].join('.');
   }
 
-  getEmailBody() {
-    return `Hi,
-
-We are pleased to inform you that your latest invoice is available.
-
-Please feel free to contact sales@starsquare.co.uk should you have any questions or require additional assistance.
-
-Best regards,
-
-StarSquare Designs`;
-  }
-
   /**
-   * get the invoice attachment contents
+   * Get the invoice attachment contents
+   * 
+   * @return object
    */
   getAttachment(spreadsheet, options) {
     // merge with default options
@@ -104,12 +119,15 @@ StarSquare Designs`;
       gridlines: false,
     }, options || {});
 
+    Logger.log('Exporting PDF')
+    SpreadsheetApp.flush();
+
     // construct export URL
     var query = Object.keys(options).map(function (key) {
       return encodeURIComponent(key) + '=' + encodeURIComponent(options[key]);
     }).join('&');
     var exportUrl = spreadsheet.getUrl().replace(/\/edit.*$/, '/export?' + query);
-    Logger.log("Downloading " + exportUrl);
+    Logger.log('Downloading ' + exportUrl);
     
     // download file
     var response;
