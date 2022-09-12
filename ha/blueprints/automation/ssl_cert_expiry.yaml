@@ -27,7 +27,7 @@ trigger:
 - platform: time
   at: '04:45:00'
 condition:
-- platform: numeric_state
+- condition: numeric_state
   entity_id: !input cert_expiry_sensor
   value_template: >
     {{ ((as_timestamp(states(cert_expiry_sensor), 0) - as_timestamp(now())) / 86400) }}
