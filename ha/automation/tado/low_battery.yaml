@@ -1,0 +1,19 @@
+id: tado_low_battery
+alias: Tado - Low TRV Battery
+trigger:
+  platform: state
+  entity_id:
+  - binary_sensor.su4133430528_battery_state
+  - binary_sensor.va0137307904_battery_state
+  - binary_sensor.va1204299520_battery_state
+  - binary_sensor.va2613651200_battery_state
+  - binary_sensor.va3016304384_battery_state
+  - binary_sensor.va3469289216_battery_state
+  - binary_sensor.va3962447616_battery_state
+  - binary_sensor.va4214105856_battery_state
+  - binary_sensor.va4247660288_battery_state
+  to: 'on'
+action:
+- service: notify.slack
+  data_template:
+    message: ":battery: {{ trigger.to_state.attributes.friendly_name | replace(' battery state', '') }} is low."
