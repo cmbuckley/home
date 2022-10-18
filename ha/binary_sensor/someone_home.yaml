@@ -9,28 +9,13 @@ observations:
   to_state: home
   prob_given_true: 0.96
   prob_given_false: 0.01
-- entity_id: group.chris_emilia
-  platform: state
-  to_state: not_home
-  prob_given_true: 0.04
-  prob_given_false: 0.99
 - entity_id: media_player.living_room_tv
   platform: state
   to_state: on
   prob_given_true: 0.25
   prob_given_false: 0
-- entity_id: media_player.living_room_tv
-  platform: state
-  to_state: off
-  prob_given_true: 0.75
-  prob_given_false: 1
 - entity_id: group.living_room_lights
   platform: state
   to_state: on
   prob_given_true: 0.4
   prob_given_false: 0.01
-- entity_id: group.living_room_lights
-  platform: state
-  to_state: off
-  prob_given_true: 0.6
-  prob_given_false: 0.99
