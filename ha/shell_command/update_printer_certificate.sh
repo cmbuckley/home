@@ -3,6 +3,9 @@
 
 domain="$1"
 
+# Install openssl if not there already
+command -v openssl >/dev/null || apk add openssl
+
 key="/ssl/live/$domain/privkey.pem"
 crt="/ssl/live/$domain/fullchain.pem"
 pfx="$(mktemp -t printer-pfx-XXXXXX)"
