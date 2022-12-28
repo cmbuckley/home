@@ -1,4 +1,0 @@
-platform: tapo_p100_control
-ip_address: !secret ip_tapo_christmas_tree
-email: !secret tapo_username
-password: !secret tapo_password
