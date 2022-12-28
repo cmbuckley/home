@@ -56,11 +56,6 @@ webostv:
       data:
         mac: !secret mac_living_room_tv
 
-alarm_control_panel:
-  - platform: alarmdotcom
-    username: !secret alarm_username
-    password: !secret alarm_password
-
 # Cameras
 ffmpeg:
 camera: !include_dir_list camera
