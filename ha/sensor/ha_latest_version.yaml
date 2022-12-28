@@ -1,4 +1,0 @@
-platform: version
-name: HA Latest Version
-source: container
-image: raspberrypi4
