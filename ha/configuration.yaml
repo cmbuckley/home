@@ -78,10 +78,6 @@ input_text:
     initial: !secret hass_internal_url
   printer_domain:
     initial: !secret printer_domain
-input_boolean:
-  display_christmas:
-    name: Dashboard Christmas Lights
-    icon: mdi:pine-tree
 
 rest_command: !include_dir_named rest_command
 switch: !include_dir_list switch
