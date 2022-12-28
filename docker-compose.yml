@@ -8,6 +8,7 @@ services:
       - ./ha:/config:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/letsencrypt:/ssl:ro
+      - /run/dbus:/run/dbus:ro
     devices:
       - /dev/gpiomem
     restart: unless-stopped

@@ -32,6 +32,9 @@ http:
 logger:
   default: warning
 
+# Enable bluetooth integration
+bluetooth:
+
 # Text to speech
 tts:
   - platform: google_translate
