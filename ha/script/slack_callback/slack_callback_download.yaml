@@ -9,7 +9,7 @@ sequence:
   value_template: '{{ payload.actions[0].action_id != "ignore" }}'
 - service: transmission.add_torrent
   data_template:
-    name: Transmission
+    entry_id: !secret entry_id_transmission
     torrent: '{{ payload.actions[0].value }}'
 - service: rest_command.slack_response
   data_template:

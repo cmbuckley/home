@@ -16,5 +16,5 @@ sequence:
   value_template: '{{ payload.actions[0].action_id != "ignore" }}'
 - service_template: 'transmission.{{ payload.actions[0].action_id }}'
   data:
-    name: Transmission
+    entry_id: !secret entry_id_transmission
     id: '{{ payload.actions[0].value[3:] | int }}'
