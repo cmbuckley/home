@@ -4,6 +4,7 @@ homeassistant:
   name: !secret home_name
   internal_url: !secret hass_internal_url
   external_url: !secret hass_external_url
+  country: GB
 
 google_assistant: !include google_assistant/configuration.yaml
 
