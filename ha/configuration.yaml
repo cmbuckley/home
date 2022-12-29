@@ -60,12 +60,6 @@ webostv:
 ffmpeg:
 camera: !include_dir_list camera
 
-notify:
-  - name: Slack
-    platform: slack
-    api_key: !secret notify_slack_api_key
-    default_channel: "#home-events"
-
 input_text:
   slack_verification_token:
     initial: !secret slack_verification_token
