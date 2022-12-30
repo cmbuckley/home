@@ -19,4 +19,4 @@ sequence:
   value_template: '{{ payload.actions[0].action_id != "ignore" }}'
 - service_template: 'alarm_control_panel.{{ payload.actions[0].action_id }}'
   target:
-    entity_id: alarm_control_panel.alarm_com
+    entity_id: alarm_control_panel.panel

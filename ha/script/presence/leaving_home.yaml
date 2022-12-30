@@ -8,7 +8,7 @@ sequence:
   target:
     entity_id: switch.voltaire_home_mode
 - condition: state
-  entity_id: alarm_control_panel.alarm_com
+  entity_id: alarm_control_panel.panel
   state: disarmed
 - service: notify.slack
   data:
