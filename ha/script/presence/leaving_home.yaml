@@ -6,7 +6,7 @@ sequence:
   entity_id: all
 - service: switch.turn_off
   target:
-    entity_id: switch.voltaire_home_mode
+    entity_id: switch.voltaire_surveillance_station_home_mode
 - condition: state
   entity_id: alarm_control_panel.panel
   state: disarmed
