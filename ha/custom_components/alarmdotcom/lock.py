@@ -5,24 +5,19 @@ import logging
 import re
 from typing import Any
 
-from homeassistant import config_entries
-from homeassistant import core
+from homeassistant import config_entries, core
 from homeassistant.components import persistent_notification
 from homeassistant.components.lock import LockEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import callback
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.entity_platform import DiscoveryInfoType
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.entity_platform import AddEntitiesCallback, DiscoveryInfoType
 from homeassistant.helpers.typing import ConfigType
 from pyalarmdotcomajax.devices import BaseDevice as libBaseDevice
 from pyalarmdotcomajax.devices.lock import Lock as libLock
 
 from .alarmhub import AlarmHub
 from .base_device import HardwareBaseDevice
-from .const import CONF_ARM_CODE
-from .const import DOMAIN
-from .const import MIGRATE_MSG_ALERT
+from .const import CONF_ARM_CODE, DOMAIN, MIGRATE_MSG_ALERT
 
 log = logging.getLogger(__name__)
 
@@ -107,7 +102,6 @@ class Lock(HardwareBaseDevice, LockEntity):  # type: ignore
         """Return true if the lock is locked."""
 
         if not self._device.malfunction:
-
             if state == libLock.DeviceState.LOCKED:
                 return True
 
@@ -119,7 +113,6 @@ class Lock(HardwareBaseDevice, LockEntity):  # type: ignore
     async def async_lock(self, **kwargs: Any) -> None:
         """Lock the lock."""
         if self._validate_code(kwargs.get("code")):
-
             self._attr_is_locking = True
 
             try:
@@ -132,7 +125,6 @@ class Lock(HardwareBaseDevice, LockEntity):  # type: ignore
     async def async_unlock(self, **kwargs: Any) -> None:
         """Unlock the lock."""
         if self._validate_code(kwargs.get("code")):
-
             self._attr_is_unlocking = True
 
             try:
@@ -148,9 +140,7 @@ class Lock(HardwareBaseDevice, LockEntity):  # type: ignore
 
     @classmethod
     def _determine_code_format(cls, code: str) -> str:
-
         if isinstance(code, str):
-
             code_patterns = [
                 r"^\d+$",  # Only digits
                 r"^\w\D+$",  # Only alpha

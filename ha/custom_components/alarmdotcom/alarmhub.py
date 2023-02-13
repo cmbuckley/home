@@ -11,18 +11,22 @@ import aiohttp
 import async_timeout
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from homeassistant.helpers.update_coordinator import UpdateFailed
-from pyalarmdotcomajax import AlarmController as libController
-from pyalarmdotcomajax import AuthResult as libAuthResult
+from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.helpers.aiohttp_client import (
+    async_create_clientsession,
+    async_get_clientsession,
+)
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from pyalarmdotcomajax import (
+    AlarmController as libController,
+    AuthResult as libAuthResult,
+)
 from pyalarmdotcomajax.devices import BaseDevice as libBaseDevice
-from pyalarmdotcomajax.errors import AuthenticationFailed
-from pyalarmdotcomajax.errors import DataFetchFailed
-from pyalarmdotcomajax.errors import UnexpectedDataStructure
+from pyalarmdotcomajax.errors import (
+    AuthenticationFailed,
+    DataFetchFailed,
+    UnexpectedDataStructure,
+)
 
 from . import const as adci
 from .errors import PartialInitialization
@@ -74,7 +78,6 @@ class BasicAlarmHub:
             )
 
             async with async_timeout.timeout(60):
-
                 login_result = await self.system.async_login()
 
                 return login_result
@@ -99,7 +102,7 @@ class BasicAlarmHub:
             raise err
 
     async def async_send_otp(self, code: int) -> None:
-        """Submit two-factor authentication code and return two factor authentication cookie."""
+        """Submit 2FA code and return two factor authentication cookie."""
 
         try:
             await self.system.async_submit_otp(
@@ -134,6 +137,7 @@ class AlarmHub(BasicAlarmHub):
             + self.system.lights
             + self.system.locks
             + self.system.garage_doors
+            + self.system.gates
             + self.system.systems
             + self.system.thermostats
         )
@@ -191,7 +195,7 @@ class AlarmHub(BasicAlarmHub):
         return None
 
     async def async_coordinator_update(self, critical: bool = True) -> None:
-        """Force coordinator refresh. Used to force refresh after alarm control panel command."""
+        """Force coordinator refresh after alarm control panel command."""
 
         if critical:
             await self.coordinator.async_refresh()
