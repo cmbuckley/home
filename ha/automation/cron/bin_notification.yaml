@@ -1,0 +1,21 @@
+id: cron_bin_notification
+alias: Cron - Bin Notification
+trigger:
+- platform: time
+  at: '18:30:00'
+condition:
+- condition: numeric_state
+  entity_id: sensor.next_bin_date
+  value_template: >
+    {{ ((as_timestamp(states(sensor.next_bin_date), 0) - as_timestamp(now())) / 86400) }}
+  below: 1
+action:
+- service: notify.slack
+  data:
+    message: >
+      {%- set type = state_attr('sensor.next_bin_date', 'type') -%}
+      {%- if type == "GREEN" -%} :recycle:
+      {%- elif type == "BLACK" -%} :wastebasket:
+      {%- elif type == "BROWN" -%} :fallen_leaf:
+      {%- endif %}
+      {{ type[0] }}{{ type[1:] | lower }} bin is due to be collected.

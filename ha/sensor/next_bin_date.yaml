@@ -1,0 +1,7 @@
+platform: command_line
+name: Next Bin Date
+command: |
+  sort -k2 /config/shell_command/download_bin_schedule.txt | head -1 | jq -MR 'split(" ") | {type: .[0], date: .[1]}'
+value_template: "{{ value_json.date }}"
+json_attributes:
+  - type

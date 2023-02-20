@@ -2,10 +2,12 @@ id: cron_bin_schedule
 alias: Cron - Bin Schedule
 trigger:
 - platform: time
-  at: '03:20:00'
+  at: '11:30:00'
 condition:
 - condition: time
   weekday:
   - sun
+  - mon
+  - tue
 action:
 - service: shell_command.download_bin_schedule
