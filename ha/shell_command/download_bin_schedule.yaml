@@ -1,1 +1,1 @@
-/config/shell_command/download_bin_schedule.sh "{{ states('input_text.council_premises') }}" &
+/config/shell_command/download_bin_schedule.sh "{{ states('input_text.council_premises') }}"

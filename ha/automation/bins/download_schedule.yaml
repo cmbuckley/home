@@ -1,5 +1,5 @@
-id: cron_bin_schedule
-alias: Cron - Bin Schedule
+id: bins_download_schedule
+alias: Bins - Download Schedule
 trigger:
 - platform: time
   at: '11:30:00'

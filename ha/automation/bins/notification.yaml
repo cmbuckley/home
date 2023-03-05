@@ -1,5 +1,5 @@
-id: cron_bin_notification
-alias: Cron - Bin Notification
+id: bins_notification
+alias: Bins - Notification
 trigger:
 - platform: time
   at: '18:30:00'
@@ -7,7 +7,7 @@ condition:
 - condition: numeric_state
   entity_id: sensor.next_bin_date
   value_template: >
-    {{ ((as_timestamp(states(sensor.next_bin_date), 0) - as_timestamp(now())) / 86400) }}
+    {{ ((as_timestamp(states('sensor.next_bin_date'), 0) - as_timestamp(now())) / 86400) }}
   below: 1
 action:
 - service: notify.slack
