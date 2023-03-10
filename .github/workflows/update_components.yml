@@ -1,0 +1,78 @@
+name: Update Custom Components
+on:
+  push:
+    branches: update-components
+  schedule:
+    - cron: '15 7 * * *'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependencies:
+    name: Determine Dependencies
+    runs-on: ubuntu-latest
+    outputs:
+      dependencies: ${{ steps.parse.outputs.dependencies }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Parse components file
+        id: parse
+        run: |
+          DEPS=$(jq -cM '.dependencies | to_entries | map(.key)' scripts/ha/components.json)
+          echo "dependencies=$DEP" >> $GITHUB_OUTPUT
+
+  latest_tag:
+    name: Get Latest Tag
+    needs: dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repository: ${{ fromJSON(needs.dependencies.outputs.dependencies) }}
+    steps:
+      - id: latest_release
+        uses: pozetroninc/github-action-get-latest-release@0.7.0
+        with:
+          repository: ${{ matrix.repository }}
+
+      - uses: cloudposse/github-action-matrix-outputs-write@0.3.0
+        with:
+          matrix-step-name: ${{ github.job }}
+          matrix-key: ${{ matrix.repository }}
+          outputs: |-
+            dependencies: ${{ steps.latest_release.outputs.release }}
+
+  update_dependencies:
+    name: Update Dependencies
+    needs: latest_tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudposse/github-action-matrix-outputs-read@0.1.1
+        id: read
+        with:
+          matrix-step-name: build
+
+      - name: Write config
+        env:
+          CONFIG: ${{ steps.read.outputs.result }}
+        run: |
+          # @todo README.md
+          jq . <<< "$CONFIG" > scripts/ha/components.json
+
+      - name: Update dependencies
+        run: |
+          scripts/ha/update_dependencies.sh
+
+      - uses: peter-evans/create-pull-request@v4
+        if: ${{ false }}
+        with:
+          add-paths: |
+            ha/custom_components
+            scripts/ha/components.json
+          commit-message: Updated custom_components
+          branch: update-components
+          title: Update custom_components
+          labels: dependencies
