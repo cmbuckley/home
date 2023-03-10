@@ -10,6 +10,7 @@ from typing import Any
 import aiohttp
 import async_timeout
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import (
@@ -63,7 +64,7 @@ class BasicAlarmHub:
         username: str,
         password: str,
         twofactorcookie: str,
-        new_websession: bool = False,
+        new_websession: bool = True,
     ) -> libAuthResult:
         """Log into Alarm.com."""
 
@@ -71,9 +72,11 @@ class BasicAlarmHub:
             self.system = libController(
                 username=username,
                 password=password,
-                websession=async_create_clientsession(self.hass)
-                if new_websession
-                else async_get_clientsession(self.hass),
+                websession=(
+                    async_create_clientsession(self.hass)
+                    if new_websession
+                    else async_get_clientsession(self.hass)
+                ),
                 twofactorcookie=twofactorcookie,
             )
 
@@ -87,7 +90,9 @@ class BasicAlarmHub:
                 "Alarm.com returned data in an unexpected format."
             ) from err
         except AuthenticationFailed as err:
-            raise ConfigEntryAuthFailed("Invalid account credentials.") from err
+            raise ConfigEntryAuthFailed(
+                "Invalid account credentials found while logging in."
+            ) from err
         except (
             asyncio.TimeoutError,
             aiohttp.ClientError,
@@ -150,13 +155,10 @@ class AlarmHub(BasicAlarmHub):
     async def async_setup(self, reload: bool = False) -> None:
         """Set up Alarm.com system instance."""
 
-        if not self.config_entry:
-            raise PartialInitialization
-
         try:
             await self.async_login(
-                username=self.config_entry.data[adci.CONF_USERNAME],
-                password=self.config_entry.data[adci.CONF_PASSWORD],
+                username=self.config_entry.data[CONF_USERNAME],
+                password=self.config_entry.data[CONF_PASSWORD],
                 twofactorcookie=self.config_entry.data.get(adci.CONF_2FA_COOKIE),
             )
         except (
@@ -194,14 +196,6 @@ class AlarmHub(BasicAlarmHub):
 
         return None
 
-    async def async_coordinator_update(self, critical: bool = True) -> None:
-        """Force coordinator refresh after alarm control panel command."""
-
-        if critical:
-            await self.coordinator.async_refresh()
-        else:
-            await self.coordinator.async_request_refresh()
-
     async def async_update(self) -> None:
         """Pull fresh data from Alarm.com for coordinator."""
 
@@ -226,8 +220,8 @@ class AlarmHub(BasicAlarmHub):
         # have 2FA set up.
         except TypeError as err:
             raise ConfigEntryAuthFailed(
-                "Two-factor authentication must be enabled in order to log in with this"
-                " provider."
+                "async_update(): Two-factor authentication must be enabled in order to"
+                " log in with this provider."
             ) from err
 
         except PermissionError as err:
@@ -238,7 +232,9 @@ class AlarmHub(BasicAlarmHub):
         # Typically captured during login. Should only be captured here when
         # updating after migration from configuration.yaml.
         except AuthenticationFailed as err:
-            raise ConfigEntryAuthFailed("Invalid account credentials.") from err
+            raise ConfigEntryAuthFailed(
+                "Invalid account credentials found while updating device states."
+            ) from err
 
         except (asyncio.TimeoutError, aiohttp.ClientError) as err:
             log.error(

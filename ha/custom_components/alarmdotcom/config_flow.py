@@ -7,10 +7,15 @@ from typing import Any, Literal
 
 import aiohttp
 from homeassistant import config_entries
-from homeassistant.const import CONF_UNIT_OF_MEASUREMENT
+from homeassistant.const import CONF_PASSWORD, CONF_UNIT_OF_MEASUREMENT, CONF_USERNAME
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv, selector
+from homeassistant.helpers.selector import (
+    TextSelector,
+    TextSelectorConfig,
+    TextSelectorType,
+)
 from homeassistant.helpers.update_coordinator import UpdateFailed
 from pyalarmdotcomajax import AuthResult as libAuthResult
 from pyalarmdotcomajax.errors import (
@@ -29,10 +34,8 @@ from .const import (
     CONF_ARM_NIGHT,
     CONF_OPTIONS_DEFAULT,
     CONF_OTP,
-    CONF_PASSWORD,
     CONF_UPDATE_INTERVAL,
     CONF_UPDATE_INTERVAL_DEFAULT,
-    CONF_USERNAME,
     DOMAIN,
 )
 
@@ -43,7 +46,7 @@ LegacyArmingOptions = Literal["home", "away", "true", "false"]
 class ADCFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
     """Handle a Alarmdotcom config flow."""
 
-    VERSION = 3
+    VERSION = 4
 
     def __init__(self) -> None:
         """Initialize the Alarmdotcom flow."""
@@ -52,9 +55,9 @@ class ADCFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
         self.system_id: str | None = None
         self.sensor_data: dict | None = {}
         self._config_title: str | None = None
-        self._existing_entry: config_entries.ConfigEntry | None = None
         self._imported_options = None
         self._alarmhub: BasicAlarmHub | None = None
+        self._existing_entry: config_entries.ConfigEntry | None = None
 
         self._force_generic_name: bool = False
 
@@ -121,8 +124,16 @@ class ADCFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
 
         creds_schema = vol.Schema(
             {
-                vol.Required(CONF_USERNAME): str,
-                vol.Required(CONF_PASSWORD): str,
+                vol.Required(CONF_USERNAME): TextSelector(
+                    TextSelectorConfig(
+                        type=TextSelectorType.TEXT, autocomplete="username"
+                    )
+                ),
+                vol.Required(CONF_PASSWORD): TextSelector(
+                    TextSelectorConfig(
+                        type=TextSelectorType.PASSWORD, autocomplete="current-password"
+                    )
+                ),
             }
         )
 
@@ -170,7 +181,11 @@ class ADCFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
 
         creds_schema = vol.Schema(
             {
-                vol.Required(CONF_OTP): str,
+                vol.Required(CONF_OTP): TextSelector(
+                    TextSelectorConfig(
+                        type=TextSelectorType.TEXT, autocomplete="one-time-code"
+                    )
+                ),
             }
         )
 
@@ -191,8 +206,6 @@ class ADCFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
             if self._force_generic_name
             else f"{self._alarmhub.provider_name}:{self._alarmhub.user_email}"
         )
-
-        self._existing_entry = await self.async_set_unique_id(self._config_title)
 
         if self._existing_entry:
             log.debug(
@@ -273,6 +286,7 @@ class ADCFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
     ) -> FlowResult:
         """Perform reauth upon an API authentication error."""
         log.debug("Reauthenticating.")
+        self._existing_entry = await self.async_set_unique_id(self._config_title)
         return await self.async_step_reauth_confirm(user_input)
 
     async def async_step_reauth_confirm(
@@ -311,9 +325,11 @@ class ADCOptionsFlowHandler(config_entries.OptionsFlow):  # type: ignore
             {
                 vol.Optional(
                     CONF_ARM_CODE,
-                    default=""
-                    if not (arm_code_raw := self.options.get(CONF_ARM_CODE))
-                    else arm_code_raw,
+                    default=(
+                        ""
+                        if not (arm_code_raw := self.options.get(CONF_ARM_CODE))
+                        else arm_code_raw
+                    ),
                 ): selector.selector({"text": {"type": "password"}}),
                 vol.Required(
                     CONF_UPDATE_INTERVAL,
