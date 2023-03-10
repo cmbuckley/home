@@ -34,7 +34,7 @@ jobs:
         repository: ${{ fromJSON(needs.dependencies.outputs.dependencies) }}
     steps:
       - id: latest_release
-        uses: pozetroninc/github-action-get-latest-release@0.7.0
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: ${{ matrix.repository }}
 
