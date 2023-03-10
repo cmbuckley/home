@@ -39,12 +39,18 @@ jobs:
           token: ${{ github.token }}
           repository: ${{ matrix.repository }}
 
+      - id: latest_release_clean
+        env:
+          release: ${{ steps.latest_release.outputs.release }}
+        run: |
+          echo "release=$(sed 's/^v//' <<< $release)" >> $GITHUB_OUTPUT
+
       - uses: cloudposse/github-action-matrix-outputs-write@0.3.0
         with:
           matrix-step-name: ${{ github.job }}
           matrix-key: ${{ matrix.repository }}
           outputs: |-
-            dependencies: ${{ steps.latest_release.outputs.release }}
+            dependencies: ${{ steps.latest_release_clean.outputs.release }}
 
   update_dependencies:
     name: Update Dependencies
