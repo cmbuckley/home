@@ -74,7 +74,7 @@ jobs:
 
       - name: Update dependencies
         run: |
-          scripts/ha/update_dependencies.sh
+          scripts/ha/update-components.sh
 
       - uses: peter-evans/create-pull-request@v4
         if: ${{ false }}
