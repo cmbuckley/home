@@ -23,7 +23,7 @@ jobs:
         id: parse
         run: |
           DEPS=$(jq -cM '.dependencies | to_entries | map(.key)' scripts/ha/components.json)
-          echo "dependencies=$DEP" >> $GITHUB_OUTPUT
+          echo "dependencies=$DEPS" >> $GITHUB_OUTPUT
 
   latest_tag:
     name: Get Latest Tag
