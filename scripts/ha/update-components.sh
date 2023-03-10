@@ -18,7 +18,7 @@ jq -r '.dependencies | to_entries[] | (.key + " " + .value)' "${0%/*}/components
         [ -e "${0%/*}/../../ha/custom_components/${component##*/}/manifest.json" ] \
             && version=$(jq -r .version "${0%/*}/../../ha/custom_components/${component##*/}/manifest.json")
 
-        echo "Current version for $dep: $version"
+        echo "Updating $dep: $version -> $tag"
         rsync -a "$component" "${0%/*}/../../ha/custom_components"
     done
 done
