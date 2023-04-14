@@ -8,6 +8,14 @@ These should be symlinked into `/etc/nginx/conf.d` and then restart nginx as fol
 sudo synosystemctl restart nginx
 ```
 
+## Radarr
+
+This expects **Settings > General > URL Base** to be set to `/radarr`.
+
 ## Sonarr
 
 This expects **Settings > General > URL Base** to be set to `/sonarr`.
+
+## Bazarr
+
+This expects **Settings > General > URL Base** to be set to `/bazarr`.
