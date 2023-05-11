@@ -1,16 +1,9 @@
 id: doorbell_ring
 alias: Doorbell - Ring
 trigger:
-- type: occupied
-  platform: device
-  device_id: e76d85608520d875d4146405695cedb3
+- platform: state
   entity_id: binary_sensor.front_door_ding
-  domain: binary_sensor
-  for:
-    hours: 0
-    minutes: 0
-    seconds: 1
-    milliseconds: 0
+  to: 'on'
 action:
 - service: notify.slack
   data:
