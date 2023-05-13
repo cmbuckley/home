@@ -1,0 +1,6 @@
+id: ssl_admin
+alias: SSL Cert Expiry - Admin
+use_blueprint:
+  path: ssl_cert_expiry.yaml
+  input:
+    cert_expiry_sensor: !secret cert_expiry_sensor_admin
