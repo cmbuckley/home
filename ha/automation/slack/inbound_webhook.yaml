@@ -3,6 +3,7 @@ alias: Slack - Inbound Webhook
 trigger:
 - platform: webhook
   webhook_id: slack_interactivity
+  local_only: false
 condition:
 - condition: template
   value_template: >
