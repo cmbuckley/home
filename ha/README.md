@@ -15,8 +15,8 @@ My [Home Assistant](https://home-assistant.io/) configuration files.
 
 ## Devices
 
-* [EdgeRouter X SFP](https://www.ui.com/edgemax/edgerouter-x-sfp/)
-* [Unifi AP AC LR](https://www.ui.com/unifi/unifi-ap-ac-lr/)
+* [EdgeRouter X SFP](https://eu.store.ui.com/eu/en/products/er-x-sfp)
+* [Unifi AP AC LR](https://eu.store.ui.com/eu/en/products/unifi-ac-lr)
 * [Tado](https://www.tado.com/gb-en)
 * Google Home Mini
 * Synology DS418
