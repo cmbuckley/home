@@ -1,7 +1,5 @@
 """
-This component provides support for Home Automation Manager (HAM).
-For more details about this component, please refer to the documentation at
-https://home-assistant.io/components/edgeos/
+Init.
 """
 import logging
 import sys
@@ -9,8 +7,8 @@ import sys
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .helpers import async_set_ha, clear_ha, get_ha, handle_log_level
-from .helpers.const import *
+from .component.helpers import async_set_ha, clear_ha, get_ha
+from .configuration.helpers.const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -20,12 +18,10 @@ async def async_setup(hass, config):
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up a EdgeOS component."""
+    """Set up a component."""
     initialized = False
 
     try:
-        await handle_log_level(hass, entry)
-
         _LOGGER.debug(f"Starting async_setup_entry of {DOMAIN}")
         entry.add_update_listener(async_options_updated)
 
@@ -37,7 +33,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         exc_type, exc_obj, tb = sys.exc_info()
         line_number = tb.tb_lineno
 
-        _LOGGER.error(f"Failed to load EdgeOS, error: {ex}, line: {line_number}")
+        _LOGGER.error(f"Failed to load integration, error: {ex}, line: {line_number}")
 
     return initialized
 
@@ -56,8 +52,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
 
 async def async_options_updated(hass: HomeAssistant, entry: ConfigEntry):
     """Triggered by config entry options updates."""
-    await handle_log_level(hass, entry)
-
     _LOGGER.info(f"async_options_updated, Entry: {entry.as_dict()} ")
 
     ha = get_ha(hass, entry.entry_id)
