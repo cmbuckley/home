@@ -1,0 +1,7 @@
+sensor:
+- name: voltaire Memory usage (swap)
+  unit_of_measurement: '%'
+  state: |
+    {% set available = states('sensor.voltaire_memory_available_swap') | float %}
+    {% set total = states('sensor.voltaire_memory_total_swap') | float %}
+    {{ (total - available) * 100 / total }}

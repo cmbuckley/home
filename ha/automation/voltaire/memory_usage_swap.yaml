@@ -1,0 +1,18 @@
+id: voltaire_memory_usage_swap
+alias: Voltaire - Memory Usage (Swap)
+trigger:
+- platform: numeric_state
+  entity_id: sensor.voltaire_memory_usage_swap
+  above: 59
+- platform: numeric_state
+  entity_id: sensor.voltaire_memory_usage_swap
+  above: 79
+- platform: numeric_state
+  entity_id: sensor.voltaire_memory_usage_swap
+  above: 89
+action:
+- service: notify.slack
+  data:
+    message: ':ram: {{ states.sensor.voltaire_memory_usage_swap.name }} at {{ states.sensor.voltaire_memory_usage_swap.state | round(1) }}%.'
+mode: queued
+max: 10
