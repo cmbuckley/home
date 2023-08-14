@@ -1,3 +1,0 @@
-platform: command_line
-name: Next Green Bin Date
-command: awk '/GREEN/{print $2}' /config/shell_command/download_bin_schedule.txt

@@ -1,0 +1,9 @@
+sensor:
+  name: HA Stable Version
+  command: "/config/command_line/ha_stable_version.sh raspberrypi4"
+  scan_interval: 86400
+  command_timeout: 30
+  value_template: "{{ value_json.name }}"
+  json_attributes:
+    - last_updated
+    - digest

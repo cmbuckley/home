@@ -1,3 +1,0 @@
-platform: command_line
-name: Next Brown Bin Date
-command: awk '/BROWN/{print $2}' /config/shell_command/download_bin_schedule.txt

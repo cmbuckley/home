@@ -75,6 +75,7 @@ switch: !include_dir_list switch
 template: !include_dir_list template
 binary_sensor: !include_dir_list binary_sensor
 sensor: !include_dir_list sensor
+command_line: !include_dir_list command_line
 frontend:
   themes: !include_dir_merge_named themes
 automation: !include_dir_list automation
