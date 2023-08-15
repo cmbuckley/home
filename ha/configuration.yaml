@@ -10,10 +10,13 @@ homeassistant:
       device_class: date
     sensor.next_black_bin_date:
       device_class: date
+      icon: mdi:trash-can
     sensor.next_brown_bin_date:
       device_class: date
+      icon: mdi:leaf
     sensor.next_green_bin_date:
       device_class: date
+      icon: mdi:recycle
 
 google_assistant: !include google_assistant/configuration.yaml
 
