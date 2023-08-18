@@ -3,8 +3,8 @@ unique_id: motion_detected
 name: Motion Detected
 device_class: motion
 entities:
-- binary_sensor.garage
-- binary_sensor.hall
-- binary_sensor.kitchen
-- binary_sensor.landing
-- binary_sensor.living_room
+- binary_sensor.garage_garage
+- binary_sensor.hall_hall
+- binary_sensor.kitchen_kitchen
+- binary_sensor.landing_landing
+- binary_sensor.living_room_living_room
