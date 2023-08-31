@@ -14,7 +14,7 @@ sequence:
       target:
         entity_id: switch.voltaire_surveillance_station_home_mode
 - condition: state
-  entity_id: alarm_control_panel.panel
+  entity_id: alarm_control_panel.panel_panel
   state: armed_away
 - service: notify.slack
   data:

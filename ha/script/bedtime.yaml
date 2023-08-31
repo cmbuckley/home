@@ -16,6 +16,6 @@ sequence:
     milliseconds: 0
 - service: alarm_control_panel.alarm_arm_home
   target:
-    entity_id: alarm_control_panel.panel
+    entity_id: alarm_control_panel.panel_panel
 mode: single
 icon: mdi:bed
