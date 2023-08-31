@@ -1,0 +1,16 @@
+id: inkbird_low_battery
+alias: Inkbird - Low Battery
+trigger:
+- platform: numeric_state
+  entity_id:
+  - sensor.ibs_th2_p01b_1a4c_battery
+  - sensor.ibs_th2_p01b_1ab3_battery
+  below: 11
+  for:
+    minutes: 5
+action:
+- service: notify.slack
+  data:
+    message: ':battery: {{ trigger.to_state.name }} at {{ trigger.to_state.state }}%.'
+mode: queued
+max: 10

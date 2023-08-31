@@ -16,4 +16,4 @@ trigger:
 action:
 - service: notify.slack
   data_template:
-    message: ":battery: {{ trigger.to_state.attributes.friendly_name | replace(' battery state', '') }} is low."
+    message: ":battery: {{ trigger.to_state.name | replace(' state', '') }} is low."
