@@ -2,15 +2,18 @@ id: ha_new_version_available
 alias: Home Assistant - New Version Available
 trigger:
   platform: state
-  entity_id: sensor.ha_stable_version
+  entity_id: sensor.docker_hub
 condition:
 - condition: template
   value_template: >
-    {{ states('sensor.ha_current_version') != states('sensor.ha_stable_version') }}
+    {{
+      states('sensor.docker_hub') != states('sensor.ha_current_version') and
+      states('sensor.docker_hub') != 'unknown'
+    }}
 action:
 - service: persistent_notification.create
   data_template:
     title: New Version Available
     message: >
-      Home Assistant version [{{ states('sensor.ha_stable_version') }}](https://github.com/home-assistant/core/releases/tag/{{ states('sensor.ha_stable_version') }}) is now available.
+      Home Assistant version [{{ states('sensor.docker_hub') }}](https://github.com/home-assistant/core/releases/tag/{{ states('sensor.docker_hub') }}) is now available.
     notification_id: ha_new_version_available
