@@ -1,0 +1,21 @@
+id: alarm_low_battery
+alias: Alarm.com - Low Battery
+trigger:
+  platform: state
+  entity_id:
+  - binary_sensor.front_door_battery
+  - binary_sensor.garage_battery
+  - binary_sensor.garage_door_battery
+  - binary_sensor.hall_battery
+  - binary_sensor.keypad_battery
+  - binary_sensor.kitchen_battery
+  - binary_sensor.landing_battery
+  - binary_sensor.living_room_battery
+  - binary_sensor.panel_battery
+  - binary_sensor.shock_1_battery
+  - binary_sensor.shock_2_battery
+  to: 'on'
+action:
+- service: notify.slack
+  data_template:
+    message: ":battery: Alarm {{ trigger.to_state.name }} is low."
