@@ -1,0 +1,21 @@
+id: shelly_low_battery
+alias: Shelly - Low Battery
+trigger:
+- platform: numeric_state
+  entity_id:
+  - sensor.guest_bedroom_boost_battery
+  below: 21
+  for:
+    minutes: 5
+- platform: numeric_state
+  entity_id:
+  - sensor.guest_bedroom_boost_battery
+  below: 11
+  for:
+    minutes: 5
+action:
+- service: notify.slack
+  data:
+    message: ':battery: {{ trigger.to_state.name }} at {{ trigger.to_state.state }}%.'
+mode: queued
+max: 10
