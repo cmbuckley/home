@@ -1,0 +1,15 @@
+id: tado_boost_guest_bedroom
+alias: Tado - Boost Guest Bedroom
+trigger:
+- platform: device
+  device_id: d594d2d7176337bac47a9d10320a2827
+  domain: shelly
+  type: single
+  subtype: button
+action:
+- service: tado.set_climate_timer
+  target:
+    entity_id: climate.guest_bedroom
+  data:
+    temperature: 18
+    time_period: "01:00:00"
