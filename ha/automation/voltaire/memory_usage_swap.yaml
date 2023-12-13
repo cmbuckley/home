@@ -11,5 +11,6 @@ action:
 - service: notify.slack
   data:
     message: ':ram: {{ states.sensor.voltaire_memory_usage_swap.name }} at {{ states.sensor.voltaire_memory_usage_swap.state | round(1) }}%.'
+    target: '#development'
 mode: queued
 max: 10
