@@ -8,6 +8,8 @@ trigger:
   below: 11
   for:
     minutes: 5
+- condition: template
+  value_template: '{{ (as_timestamp(now()) - as_timestamp(this.attributes.last_triggered)) | int(0) > 86400 }}'
 action:
 - service: notify.slack
   data:
