@@ -25,6 +25,7 @@ http:
   ssl_key: !secret hass_ssl_key
   ssl_certificate: !secret hass_ssl_certificate
   use_x_forwarded_for: true
+  # https://www.cloudflare.com/ips-v4/
   trusted_proxies:
     - 127.0.0.1
     - 173.245.48.0/20
@@ -41,6 +42,7 @@ http:
     - 104.16.0.0/13
     - 104.24.0.0/14
     - 172.64.0.0/13
+    - 131.0.72.0/22
 
 logger:
   default: warning
