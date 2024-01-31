@@ -36,7 +36,7 @@ action:
 - service: notify.slack
   data:
     message: >
-      {%- set cert_name = state_attr(cert_expiry_sensor, 'friendly_name') | regex_replace('Cert Expiry Timestamp \(([^)]+)\)', '\\1') -%}
+      {%- set cert_name = state_attr(cert_expiry_sensor, 'friendly_name').split(' ') | first -%}
       {%- set cert_link = '<https://' ~ cert_name ~ '|' ~ cert_name ~ '>' -%}
 
       {%- if state_attr(cert_expiry_sensor, 'is_valid') -%}
