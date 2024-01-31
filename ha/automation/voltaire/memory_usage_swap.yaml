@@ -3,10 +3,10 @@ alias: Voltaire - Memory Usage (Swap)
 trigger:
 - platform: numeric_state
   entity_id: sensor.voltaire_memory_usage_swap
-  above: 70
+  above: 80
 - platform: numeric_state
   entity_id: sensor.voltaire_memory_usage_swap
-  above: 85
+  above: 90
 action:
 - service: notify.slack
   data:
