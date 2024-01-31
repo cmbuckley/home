@@ -10,6 +10,16 @@ condition:
     {%- set payload = trigger.data.payload | from_json -%}
     {{ (payload.token == states('input_text.slack_verification_token')) and (payload.type == 'block_actions') }}
 action:
+- if:
+  - condition: template
+    value_template: >
+      {%- set payload = trigger.data.payload | from_json -%}
+      {%- set script = payload.actions[0].block_id.split('|')[0] -%}
+      {{ states('script.slack_callback_' ~ script) == 'unknown' }}
+  then:
+  - service: system_log.write
+    data_template:
+      message: 'Unexpected Slack callback: {{ trigger.data.payload }}'
 - service_template: >
     {%- set payload = trigger.data.payload | from_json -%}
     script.slack_callback_{{ payload.actions[0].block_id.split('|')[0] }}
