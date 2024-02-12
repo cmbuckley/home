@@ -19,6 +19,10 @@ blueprint:
           min: 1
           max: 30
           unit_of_measurement: days
+    target:
+      name: Slack Channel
+      description: The channel to post to in Slack
+      default: '#development'
 trigger_variables:
   cert_expiry_sensor: !input cert_expiry_sensor
 variables:
@@ -35,6 +39,7 @@ condition:
 action:
 - service: notify.slack
   data:
+    target: !input target
     message: >
       {%- set cert_name = state_attr(cert_expiry_sensor, 'friendly_name').split(' ') | first -%}
       {%- set cert_link = '<https://' ~ cert_name ~ '|' ~ cert_name ~ '>' -%}
