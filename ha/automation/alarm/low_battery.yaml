@@ -18,4 +18,4 @@ trigger:
 action:
 - service: notify.slack
   data_template:
-    message: ":battery: Alarm {{ trigger.to_state.name }} is low."
+    message: ":low_battery: Alarm {{ trigger.to_state.name }} is low."

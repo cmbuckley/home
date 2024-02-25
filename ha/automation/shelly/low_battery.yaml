@@ -16,6 +16,6 @@ trigger:
 action:
 - service: notify.slack
   data:
-    message: ':battery: {{ trigger.to_state.name }} at {{ trigger.to_state.state }}%.'
+    message: ':low_battery: {{ trigger.to_state.name }} at {{ trigger.to_state.state }}%.'
 mode: queued
 max: 10

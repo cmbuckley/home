@@ -14,6 +14,6 @@ trigger:
 action:
 - service: notify.slack
   data:
-    message: ':battery: {{ states.sensor.front_door_battery.name }} at {{ states.sensor.front_door_battery.state }}%.'
+    message: ':low_battery: {{ states.sensor.front_door_battery.name }} at {{ states.sensor.front_door_battery.state }}%.'
 mode: queued
 max: 10
