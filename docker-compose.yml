@@ -2,7 +2,7 @@ version: '3'
 services:
   homeassistant:
     container_name: homeassistant
-    image: homeassistant/raspberrypi4-homeassistant:stable
+    image: homeassistant/home-assistant:stable
     network_mode: host
     volumes:
       - ./ha:/config:rw
