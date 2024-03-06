@@ -1,4 +1,5 @@
 """Controller interfaces with the Alarm.com API via pyalarmdotcomajax."""
+
 from __future__ import annotations
 
 import asyncio
@@ -17,6 +18,7 @@ from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from pyalarmdotcomajax import AlarmController as libAlarmController
+from pyalarmdotcomajax import WebSocketState
 from pyalarmdotcomajax.exceptions import (
     AlarmdotcomException,
     AuthenticationFailed,
@@ -27,13 +29,13 @@ from pyalarmdotcomajax.exceptions import (
 from .const import (
     CONF_2FA_COOKIE,
     CONF_DEFAULT_UPDATE_INTERVAL_SECONDS,
+    CONF_DEFAULT_WEBSOCKET_RECONNECT_TIMEOUT,
     CONF_UPDATE_INTERVAL,
+    CONF_WEBSOCKET_RECONNECT_TIMEOUT,
     KEEP_ALIVE_INTERVAL_SECONDS,
 )
 
 LOGGER = logging.getLogger(__name__)
-
-# TODO: Move websocket control here and include handler to restart if connection is lost.
 
 
 class AlarmIntegrationController:
@@ -51,6 +53,9 @@ class AlarmIntegrationController:
         self.options: MappingProxyType[str, Any]
 
         self._stop_keep_alive: CALLBACK_TYPE
+
+        self._ws_state: WebSocketState = WebSocketState.STOPPED
+        self._ws_close_event = asyncio.Event()
 
         LOGGER.debug("%s: Registering update listener.", __name__)
 
@@ -134,11 +139,7 @@ class AlarmIntegrationController:
 
         try:
             await self.api.async_login()
-        except (
-            asyncio.TimeoutError,
-            aiohttp.ClientError,
-            asyncio.exceptions.CancelledError,
-        ) as err:
+        except (TimeoutError, aiohttp.ClientError, asyncio.exceptions.CancelledError) as err:
             raise ConfigEntryNotReady from err
         except UnexpectedResponse as err:
             raise UpdateFailed from err
@@ -172,6 +173,32 @@ class AlarmIntegrationController:
 
         except AlarmdotcomException as err:
             raise UpdateFailed(str(err)) from err
+
+    def _ws_state_handler(self, state: WebSocketState) -> None:
+        """Handle websocket state changes in the Alarm.com API."""
+
+        self._ws_state = state
+
+        if state in {WebSocketState.DISCONNECTED, WebSocketState.STOPPED}:
+            self._ws_close_event.set()
+
+    async def async_start_websocket_monitor(self) -> None:
+        """Start a websocket connection and monitor it for disconnection."""
+
+        ws_reconnect_timeout = self.config_entry.options.get(
+            CONF_WEBSOCKET_RECONNECT_TIMEOUT, CONF_DEFAULT_WEBSOCKET_RECONNECT_TIMEOUT
+        )
+
+        while True:
+            self._ws_close_event.clear()
+            self.api.start_websocket(self._ws_state_handler)
+
+            await self._ws_close_event.wait()
+
+            if self._ws_state == WebSocketState.STOPPED:
+                break
+
+            await asyncio.sleep(ws_reconnect_timeout)
 
     @property
     def provider_name(self) -> str:

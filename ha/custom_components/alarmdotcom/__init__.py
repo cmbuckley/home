@@ -1,4 +1,5 @@
 """The alarmdotcom integration."""
+
 from __future__ import annotations
 
 import asyncio
@@ -61,7 +62,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         raise ConfigEntryAuthFailed("Authentication failed. Please try logging in again.") from ex
     except ConfigureTwoFactorAuthentication as ex:
         raise ConfigEntryAuthFailed from ex
-    except (AlarmdotcomException, aiohttp.ClientError, asyncio.TimeoutError) as ex:
+    except (TimeoutError, AlarmdotcomException, aiohttp.ClientError) as ex:
         raise ConfigEntryNotReady from ex
 
     # Store integration data for use during platform setup.
@@ -73,7 +74,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     # Initialize WebSocket listener
     #
 
-    controller.api.start_websocket()
+    asyncio.get_running_loop().create_task(controller.async_start_websocket_monitor())
 
     config_entry.async_on_unload(hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP, controller.stop))
 

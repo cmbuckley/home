@@ -1,4 +1,5 @@
 """Alarmdotcom implementation of an HA thermostat."""
+
 from __future__ import annotations
 
 import logging
@@ -17,7 +18,7 @@ from homeassistant.components.climate.const import (
     FAN_ON,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_FAHRENHEIT
+from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from homeassistant.helpers.entity_platform import AddEntitiesCallback, DiscoveryInfoType
 from pyalarmdotcomajax.devices.registry import AllDevices_t
 from pyalarmdotcomajax.devices.thermostat import Thermostat as libThermostat
@@ -56,8 +57,6 @@ class Climate(HardwareBaseDevice, ClimateEntity):  # type: ignore
 
     _device_type_name: str = "Thermostat"
     _device: libThermostat
-
-    _attr_temperature_unit = TEMP_FAHRENHEIT  # Alarm.com always returns Fahrenheit, even when user profile is set to C. Conversion happens on frontend.
 
     _raw_attribs: libThermostat.ThermostatAttributes
 
@@ -222,6 +221,13 @@ class Climate(HardwareBaseDevice, ClimateEntity):  # type: ignore
 
     def _determine_features(self) -> None:
         """Determine which features are available for thermostat."""
+        #
+        # UNIT OF MEASUREMENT
+        #
+
+        self._attr_temperature_unit = (
+            UnitOfTemperature.CELSIUS if self._device.attributes.uses_celsius else UnitOfTemperature.FAHRENHEIT
+        )
 
         #
         # SUPPORTED FEATURES

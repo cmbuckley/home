@@ -1,4 +1,5 @@
 """Const for the Alarmdotcom integration."""
+
 from __future__ import annotations
 
 import logging
@@ -31,6 +32,7 @@ MIGRATE_MSG_ALERT = (
 
 KEEP_ALIVE_INTERVAL_SECONDS = 60
 CONF_DEFAULT_UPDATE_INTERVAL_SECONDS = 900  # 15 minutes
+CONF_DEFAULT_WEBSOCKET_RECONNECT_TIMEOUT = 300  # 5 minutes
 
 LOGGER = logging.getLogger(__package__)
 
@@ -46,6 +48,7 @@ CONF_OTP_METHODS_LIST = "otp_methods_list"
 
 CONF_ARM_CODE = "arm_code"
 CONF_UPDATE_INTERVAL = "update_interval"
+CONF_WEBSOCKET_RECONNECT_TIMEOUT = "ws_reconnect_timeout"
 CONF_ARM_HOME = "arm_home_options"
 CONF_ARM_AWAY = "arm_away_options"
 CONF_ARM_NIGHT = "arm_night_options"
@@ -66,6 +69,7 @@ CONF_OPTIONS_DEFAULT = {
     CONF_ARM_AWAY: [],
     CONF_ARM_NIGHT: [],
     CONF_UPDATE_INTERVAL: CONF_DEFAULT_UPDATE_INTERVAL_SECONDS,
+    CONF_WEBSOCKET_RECONNECT_TIMEOUT: CONF_DEFAULT_WEBSOCKET_RECONNECT_TIMEOUT,
 }
 
 SENSOR_SUBTYPE_BLACKLIST = [
@@ -75,7 +79,6 @@ SENSOR_SUBTYPE_BLACKLIST = [
 ]
 
 DATA_CONTROLLER = "connection"
-DATA_LISTENER = "listener"
 
 ATTRIB_BATTERY_NORMAL = "Normal"
 ATTRIB_BATTERY_LOW = "Low"
