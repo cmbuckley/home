@@ -2,11 +2,13 @@ from datetime import timedelta
 from typing import TypeVar
 
 from custom_components.tapo.const import DOMAIN
-from custom_components.tapo.coordinators import TapoCoordinator
+from custom_components.tapo.coordinators import TapoDataCoordinator
 from homeassistant.core import callback
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from plugp100.api.hub.ke100_device import KE100Device
+from plugp100.api.hub.ke100_device import KE100DeviceState
 from plugp100.api.hub.s200b_device import S200BDeviceState
 from plugp100.api.hub.s200b_device import S200ButtonDevice
 from plugp100.api.hub.switch_child_device import SwitchChildDevice
@@ -29,6 +31,7 @@ HubChildDevice = (
     | T100MotionSensor
     | SwitchChildDevice
     | WaterLeakSensor
+    | KE100Device
 )
 HubChildCommonState = (
     T31DeviceState
@@ -37,10 +40,11 @@ HubChildCommonState = (
     | T100MotionSensorState
     | SwitchChildDeviceState
     | LeakDeviceState
+    | KE100DeviceState
 )
 
 
-class TapoHubChildCoordinator(TapoCoordinator):
+class TapoHubChildCoordinator(TapoDataCoordinator):
     def __init__(
         self,
         hass: HomeAssistant,
@@ -72,9 +76,12 @@ class TapoHubChildCoordinator(TapoCoordinator):
         elif isinstance(self.device, WaterLeakSensor):
             base_state = (await self.device.get_device_state()).get_or_raise()
             self.update_state_of(HubChildCommonState, base_state)
+        elif isinstance(self.device, KE100Device):
+            base_state = (await self.device.get_device_state()).get_or_raise()
+            self.update_state_of(HubChildCommonState, base_state)
 
 
-C = TypeVar("C", bound=TapoCoordinator)
+C = TypeVar("C", bound=TapoDataCoordinator)
 
 
 class BaseTapoHubChildEntity(CoordinatorEntity[C]):

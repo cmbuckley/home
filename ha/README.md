@@ -25,7 +25,7 @@ My [Home Assistant](https://home-assistant.io/) configuration files.
 
 * [alarmdotcom](https://github.com/pyalarmdotcom/alarmdotcom) (3.0.13)
 * [edgeos](https://github.com/elad-bar/ha-edgeos) (2.0.28)
-* [tapo](https://github.com/petretiandrea/home-assistant-tapo-p100/) (2.11.0)
+* [tapo](https://github.com/petretiandrea/home-assistant-tapo-p100/) (3.0.0)
 
 ## Resources
 
