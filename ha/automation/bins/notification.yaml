@@ -19,3 +19,11 @@ action:
       {%- elif type == "BROWN" -%} :fallen_leaf:
       {%- endif %}
       {{ type[0] }}{{ type[1:] | lower }} bin is due to be collected.
+- service: todoist.new_task
+  data:
+    project: House 🏡
+    content: Put out {{ states('sensor.next_bin') | lower }} bin
+    assignee: Chris
+    priority: 3
+    due_date_string: today
+    due_date_lang: en

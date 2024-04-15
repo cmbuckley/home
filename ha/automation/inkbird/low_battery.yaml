@@ -13,5 +13,13 @@ action:
 - service: notify.slack
   data:
     message: ':low_battery: {{ trigger.to_state.name }} at {{ trigger.to_state.state }}%.'
+- service: todoist.new_task
+  data:
+    project: House 🏡
+    content: Replace {{ trigger.to_state.name }} battery
+    assignee: Chris
+    priority: 3
+    due_date_string: today
+    due_date_lang: en
 mode: queued
 max: 10
