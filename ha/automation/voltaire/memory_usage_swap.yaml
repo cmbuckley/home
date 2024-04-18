@@ -4,9 +4,6 @@ mode: queued
 trigger:
 - platform: numeric_state
   entity_id: sensor.voltaire_memory_usage_swap
-  above: 80
-- platform: numeric_state
-  entity_id: sensor.voltaire_memory_usage_swap
   above: 90
 action:
 - service: notify.slack
