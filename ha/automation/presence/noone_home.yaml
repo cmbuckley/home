@@ -2,8 +2,8 @@ id: presence_noone_home
 alias: Presence - No One is Home
 trigger:
 - platform: state
-  entity_id: group.chris_emilia
-  to: not_home
+  entity_id: binary_sensor.someone_home
+  to: 'off'
   for:
     minutes: 6
 action:

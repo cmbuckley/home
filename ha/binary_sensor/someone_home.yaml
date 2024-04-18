@@ -9,6 +9,11 @@ observations:
   to_state: home
   prob_given_true: 0.96
   prob_given_false: 0.01
+- entity_id: sensor.vistaverde_guest
+  platform: numeric_state
+  above: 0
+  prob_given_true: 0.99
+  prob_given_false: 0.01
 - entity_id: media_player.living_room_tv
   platform: state
   to_state: on

@@ -2,8 +2,8 @@ id: presence_someone_home
 alias: Presence - Someone is Home
 trigger:
 - platform: state
-  entity_id: group.chris_emilia
-  to: home
+  entity_id: binary_sensor.someone_home
+  to: 'on'
 action:
 - service: script.coming_home
 mode: single
