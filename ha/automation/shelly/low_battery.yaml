@@ -1,5 +1,6 @@
 id: shelly_low_battery
 alias: Shelly - Low Battery
+mode: parallel
 trigger:
 - platform: numeric_state
   entity_id:
@@ -17,5 +18,3 @@ action:
 - service: notify.slack
   data:
     message: ':low_battery: {{ trigger.to_state.name }} at {{ trigger.to_state.state }}%.'
-mode: queued
-max: 10

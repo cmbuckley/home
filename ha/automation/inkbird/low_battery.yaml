@@ -1,5 +1,6 @@
 id: inkbird_low_battery
 alias: Inkbird - Low Battery
+mode: parallel
 trigger:
 - platform: numeric_state
   entity_id:
@@ -21,5 +22,3 @@ action:
     priority: 3
     due_date_string: today
     due_date_lang: en
-mode: queued
-max: 10

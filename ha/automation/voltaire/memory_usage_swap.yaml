@@ -1,5 +1,6 @@
 id: voltaire_memory_usage_swap
 alias: Voltaire - Memory Usage (Swap)
+mode: queued
 trigger:
 - platform: numeric_state
   entity_id: sensor.voltaire_memory_usage_swap
@@ -12,5 +13,3 @@ action:
   data:
     message: ':ram: {{ states.sensor.voltaire_memory_usage_swap.name }} at {{ states.sensor.voltaire_memory_usage_swap.state | round(1) }}%.'
     target: '#development'
-mode: queued
-max: 10

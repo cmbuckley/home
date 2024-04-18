@@ -1,5 +1,6 @@
 id: alarm_low_battery
 alias: Alarm.com - Low Battery
+mode: parallel
 trigger:
   platform: state
   entity_id:

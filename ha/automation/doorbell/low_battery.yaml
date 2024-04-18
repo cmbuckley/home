@@ -1,5 +1,6 @@
 id: doorbell_low_battery
 alias: Doorbell - Low Battery
+mode: parallel
 trigger:
 - platform: numeric_state
   entity_id: sensor.front_door_battery
@@ -15,5 +16,3 @@ action:
 - service: notify.slack
   data:
     message: ':low_battery: {{ states.sensor.front_door_battery.name }} at {{ states.sensor.front_door_battery.state }}%.'
-mode: queued
-max: 10

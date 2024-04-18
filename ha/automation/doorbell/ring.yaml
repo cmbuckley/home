@@ -1,5 +1,6 @@
 id: doorbell_ring
 alias: Doorbell - Ring
+mode: single
 trigger:
 - platform: state
   entity_id: binary_sensor.front_door_ding
@@ -17,4 +18,3 @@ action:
       {{ states('input_text.hass_internal_url') }}/local/doorbell_tones/ring.mp3
     media_content_type: music
   entity_id: media_player.all
-mode: single

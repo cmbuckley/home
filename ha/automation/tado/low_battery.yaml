@@ -1,5 +1,6 @@
 id: tado_low_battery
 alias: Tado - Low TRV Battery
+mode: parallel
 trigger:
   platform: state
   entity_id:

@@ -1,5 +1,6 @@
 id: presence_noone_home
 alias: Presence - No One is Home
+mode: single
 trigger:
 - platform: state
   entity_id: binary_sensor.someone_home
@@ -8,4 +9,3 @@ trigger:
     minutes: 6
 action:
 - service: script.leaving_home
-mode: single

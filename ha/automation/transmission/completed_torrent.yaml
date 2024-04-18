@@ -1,5 +1,6 @@
 id: transmission_completed_torrent
 alias: Transmission - Completed Torrent
+mode: parallel
 trigger:
   platform: event
   event_type: transmission_downloaded_torrent
