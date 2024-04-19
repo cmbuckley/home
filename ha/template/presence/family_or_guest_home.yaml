@@ -1,0 +1,3 @@
+binary_sensor:
+- name: Family Or Guest Home
+  state: '{{ states("group.chris_emilia") == "home" or states("sensor.vistaverde_guest") | int > 0 }}'

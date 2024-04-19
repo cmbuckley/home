@@ -4,23 +4,8 @@ device_class: presence
 prior: 0.7
 probability_threshold: 0.9
 observations:
-- entity_id: group.chris_emilia
+- entity_id: binary_sensor.family_or_guest_home
   platform: state
-  to_state: home
+  to_state: 'on'
   prob_given_true: 0.96
-  prob_given_false: 0.01
-- entity_id: sensor.vistaverde_guest
-  platform: numeric_state
-  above: 0
-  prob_given_true: 0.99
-  prob_given_false: 0.01
-- entity_id: media_player.living_room_tv
-  platform: state
-  to_state: on
-  prob_given_true: 0.25
-  prob_given_false: 0
-- entity_id: group.living_room_lights
-  platform: state
-  to_state: on
-  prob_given_true: 0.4
   prob_given_false: 0.01
