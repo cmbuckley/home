@@ -2,7 +2,7 @@ id: bins_notification
 alias: Bins - Notification
 trigger:
 - platform: time
-  at: '18:30:00'
+  at: '13:30:00'
 condition:
 - condition: numeric_state
   entity_id: sensor.next_bin
