@@ -17,7 +17,7 @@ action:
 - service: todoist.new_task
   data:
     project: House 🏡
-    content: Replace {{ trigger.to_state.name }} battery
+    content: Replace {{ trigger.to_state.name }}
     assignee: Chris
     priority: 3
     due_date_string: today
