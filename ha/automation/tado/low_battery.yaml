@@ -22,6 +22,7 @@ action:
   data:
     project: House 🏡
     content: Replace {{ trigger.to_state.name | replace(' state', '') }}
+    description: Requires 2 × AA batteries
     assignee: Chris
     priority: 3
     due_date_string: today
