@@ -6,4 +6,5 @@ home-assistant_v2.db*
 .storage
 .cloud
 .google.token
+.shopping_list.json
 tts
