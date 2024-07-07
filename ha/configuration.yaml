@@ -70,10 +70,6 @@ input_text:
     initial: !secret slack_verification_token
   hass_internal_url:
     initial: !secret hass_internal_url
-  printer_domain:
-    initial: !secret printer_domain
-  council_premises:
-    initial: !secret council_premises
 
 rest_command: !include_dir_named rest_command
 switch: !include_dir_list switch

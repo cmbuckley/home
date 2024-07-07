@@ -11,3 +11,5 @@ condition:
   - tue
 action:
 - service: shell_command.download_bin_schedule
+  data:
+    premises: !secret council_premises

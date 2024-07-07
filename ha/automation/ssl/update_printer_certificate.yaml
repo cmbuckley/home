@@ -8,3 +8,5 @@ condition:
   weekday: sun
 action:
 - service: shell_command.update_printer_certificate
+  data:
+    domain: !secret printer_domain
