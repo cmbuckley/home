@@ -8,7 +8,16 @@ condition:
 - condition: template
   value_template: >
     {%- set payload = trigger.data.payload | from_json -%}
-    {{ (payload.token == states('input_text.slack_verification_token')) and (payload.type == 'block_actions') }}
+
+    {# ephemeral messages don't send their payload with a block_actions payload #}
+    {%- set action = {} -%}
+    {%- if payload.message -%}
+      {%- set actions = payload.message.blocks | selectattr('type', 'equalto', 'actions') | first -%}
+      {%- set action = actions.elements | selectattr('action_id', 'equalto', payload.actions[0].action_id) | first -%}
+    {%- endif -%}
+
+    {# we get a callback for all block actions, even if the action is a URL button. Ignore those cases #}
+    {{ (payload.token == states('input_text.slack_verification_token')) and (payload.type == 'block_actions') and ('url' not in action) }}
 action:
 - if:
   - condition: template
