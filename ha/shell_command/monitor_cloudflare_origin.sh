@@ -1,9 +1,10 @@
 #!/bin/bash
-# Usage: ./monitor_cloudflare_origin.sh DOMAIN TOKEN [RECORD_TYPE]
+# Usage: ./monitor_cloudflare_origin.sh DOMAIN TOKEN [RECORD_TYPE] [PORT]
 
 domain="$1"
 token="$2"
 record_type="$3"
+port="${4:-443}"
 
 # Install openssl if not there already
 command -v openssl >/dev/null || apk add openssl
@@ -46,6 +47,6 @@ if [ -z "$origin" ]; then
     exit 1
 fi
 
-openssl s_client -host $origin -port 443 -servername $domain <<< Q 2>/dev/null |
+openssl s_client -host $origin -port $port -servername $domain <<< Q 2>/dev/null |
     openssl x509 -noout -enddate -dateopt iso_8601 |
     sed 's/notAfter=//'

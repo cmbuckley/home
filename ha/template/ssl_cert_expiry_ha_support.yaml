@@ -1,7 +1,7 @@
-unique_id: ssl_cert_expiry_homeassistant
+unique_id: ssl_cert_expiry_ha_support
 trigger:
 - platform: time
-  at: '04:10:00'
+  at: '04:15:00'
 action:
 - service: shell_command.monitor_cloudflare_origin
   response_variable: monitor
@@ -9,9 +9,10 @@ action:
     domain: "{{ states('input_text.hass_internal_url') | replace('https://', '') }}"
     token: !secret cloudflare_origin_token
     record_type: AAAA
+    port: 8443
 sensor:
-- unique_id: ssl_cert_expiry_timestamp_homeassistant
-  name: "Home Assistant Origin Cert expiry"
+- unique_id: ssl_cert_expiry_timestamp_ha_support
+  name: "HA Support Scripts Origin Cert expiry"
   icon: mdi:certificate
   device_class: timestamp
   state: "{{ monitor['stdout'] }}"
