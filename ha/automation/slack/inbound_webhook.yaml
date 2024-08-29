@@ -10,9 +10,14 @@ condition:
     {%- set payload = trigger.data.payload | from_json -%}
 
     {# ephemeral messages don't send their payload with a block_actions payload #}
+    {# actions block can be nested inside a legacy attachment #}
     {%- set action = {} -%}
     {%- if payload.message -%}
-      {%- set actions = payload.message.blocks | selectattr('type', 'equalto', 'actions') | first -%}
+      {%- if payload.message.attachments -%}
+        {%- set actions = payload.message.attachments[0].blocks | selectattr('type', 'equalto', 'actions') | first -%}
+      {%- else -%}
+        {%- set actions = payload.message.blocks | selectattr('type', 'equalto', 'actions') | first -%}
+      {%- endif -%}
       {%- set action = actions.elements | selectattr('action_id', 'equalto', payload.actions[0].action_id) | first -%}
     {%- endif -%}
 
