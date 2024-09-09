@@ -10,3 +10,4 @@ home-assistant_v2.db*
 tts
 
 custom_components/hacs
+custom_components/waste_collection_schedule

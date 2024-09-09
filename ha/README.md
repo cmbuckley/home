@@ -23,7 +23,9 @@ My [Home Assistant](https://home-assistant.io/) configuration files.
 
 ## Custom Components
 
-Custom components are loaded using [HACS](https://hacs.xyz).
+Custom components are loaded using [HACS](https://hacs.xyz):
+
+* [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule)
 
 Some custom components are still manually installed:
 
