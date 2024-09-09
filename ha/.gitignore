@@ -9,5 +9,6 @@ home-assistant_v2.db*
 .shopping_list.json
 tts
 
+custom_components/alarmdotcom
 custom_components/hacs
 custom_components/waste_collection_schedule
