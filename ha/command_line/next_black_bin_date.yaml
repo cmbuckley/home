@@ -1,4 +1,0 @@
-sensor:
-  name: Next Black Bin Date
-  unique_id: next_black_bin_date
-  command: awk '/BLACK/{print $2}' /config/shell_command/download_bin_schedule.txt

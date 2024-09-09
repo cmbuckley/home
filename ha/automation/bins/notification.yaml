@@ -5,15 +5,15 @@ trigger:
   at: '13:30:00'
 condition:
 - condition: numeric_state
-  entity_id: sensor.next_bin
+  entity_id: sensor.next_bin_collection
   value_template: >
-    {{ ((as_timestamp(state_attr('sensor.next_bin', 'date'), 0) - as_timestamp(now())) / 86400) }}
+    {{ ((as_timestamp(state.attributes[state.state]) - as_timestamp(now())) / 86400) }}
   below: 1
 action:
 - service: notify.slack
   data:
     message: >
-      {%- set type = states('sensor.next_bin') -%}
+      {%- set type = states('sensor.next_bin_collection') -%}
       {%- if type == "GREEN" -%} :recycle:
       {%- elif type == "BLACK" -%} :wastebasket:
       {%- elif type == "BROWN" -%} :fallen_leaf:
@@ -22,7 +22,7 @@ action:
 - service: todoist.new_task
   data:
     project: House 🏡
-    content: Put out {{ states('sensor.next_bin') | lower }} bin
+    content: Put out {{ states('sensor.next_bin_collection') | lower }} bin
     assignee: Chris
     priority: 3
     due_date_string: today

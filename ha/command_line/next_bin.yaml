@@ -1,8 +1,0 @@
-sensor:
-  name: Next Bin
-  unique_id: next_bin
-  command: |
-    sort -k2 /config/shell_command/download_bin_schedule.txt | head -1 | jq -MR 'split(" ") | {type: .[0], date: .[1]}'
-  value_template: "{{ value_json.type }}"
-  json_attributes:
-    - date
