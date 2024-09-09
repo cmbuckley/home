@@ -8,3 +8,5 @@ home-assistant_v2.db*
 .google.token
 .shopping_list.json
 tts
+
+custom_components/hacs
