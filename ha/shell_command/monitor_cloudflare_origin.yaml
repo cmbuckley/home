@@ -1,1 +1,1 @@
-/config/shell_command/monitor_cloudflare_origin.sh "{{ domain }}" "{{ token }}" "{{ record_type }}" "{{ port }}"
+/config/shell_command/monitor_cloudflare_origin.sh "{{ domain }}" "{{ token }}" "{{ record_type | default('A') }}" "{{ port | default(443) }}"
