@@ -1,0 +1,25 @@
+id: presence_waitrose
+alias: Presence - Arriving at Waitrose
+mode: single
+trigger:
+- platform: zone
+  entity_id:
+  - device_tracker.chriss_iphone
+  - device_tracker.iphone_13_pro_3
+  zone: zone.waitrose
+condition:
+- condition: numeric_state
+  entity_id: todo.shopping_list
+  above: 0
+action:
+- action: "notify.mobile_app_{{ trigger.entity_id | replace('device_tracker.', '') }}"
+  data:
+    title: Shopping List
+    message: >
+      There {% if states('todo.shopping_list') | int < 2 -%}
+        is 1 item
+      {%- else -%}
+        are {{ states('todo.shopping_list') }} items
+      {%- endif %} on your shopping list.
+    data:
+      url: /todo/shopping_list
