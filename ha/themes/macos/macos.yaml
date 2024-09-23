@@ -129,6 +129,13 @@ macOS Theme:
       rgb-state-input-boolean-color: var(--rgb-accent-color)
       rgb-state-humidifier-color: var(--rgb-accent-color)
       rgb-state-cover-color: var(--rgb-accent-color)
+      # Alarm state colours
+      state-alarm_control_panel-disarmed-color: var(--green-color)
+      state-alarm_control_panel-armed_away-color: var(--red-color)
+      state-alarm_control_panel-armed_home-color: var(--orange-color)
+      state-alarm_control_panel-arming-color: var(--amber-color)
+      state-alarm_control_panel-disarming-color: var(--amber-color)
+      state-alarm_control_panel-pending-color: var(--amber-color)
 #
     dark:
       # Header:
