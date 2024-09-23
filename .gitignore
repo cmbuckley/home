@@ -1,5 +1,6 @@
 # Home Assistant ignores
 __pycache__
 .HA_VERSION
+.DS_Store
 webostv.conf
 image
