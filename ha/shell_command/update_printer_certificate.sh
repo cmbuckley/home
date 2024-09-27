@@ -10,9 +10,10 @@ key="/ssl/live/$domain/privkey.pem"
 crt="/ssl/live/$domain/fullchain.pem"
 pfx="$(mktemp -t printer-pfx-XXXXXX)"
 password="$(openssl rand -base64 12)"
+ip=$(dig +short $domain | tail -1)
 
 # URL for HP EWS printers
-upload_url="https://$domain/Security/DeviceCertificates/NewCertWithPassword/Upload"
+upload_url="https://$ip/Security/DeviceCertificates/NewCertWithPassword/Upload"
 
 local_mod="$(openssl x509 -modulus -noout -in "$crt")"
 remote_mod="$(openssl s_client -host $domain -port 443 <<< Q 2>/dev/null | openssl x509 -modulus -noout)"
