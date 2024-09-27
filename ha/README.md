@@ -26,11 +26,11 @@ My [Home Assistant](https://home-assistant.io/) configuration files.
 Custom components are loaded using [HACS](https://hacs.xyz):
 
 * [Alarm.com](https://github.com/pyalarmdotcom/alarmdotcom)
+* [EdgeOS (Ubiquiti)](https://github.com/elad-bar/ha-edgeos)
 * [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule)
 
 Some custom components are still manually installed:
 
-* [edgeos](https://github.com/elad-bar/ha-edgeos) (2.0.28)
 * [tapo](https://github.com/petretiandrea/home-assistant-tapo-p100/) (3.0.0)
 
 ## Resources
