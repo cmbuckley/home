@@ -61,6 +61,19 @@ input_text:
     initial: !secret hass_internal_url
     mode: password
 
+input_select:
+  chriss_iphone_focus_name:
+    name: Chris's iPhone Focus Name
+    icon: mdi:moon-waning-crescent
+    options:
+    - 'Off'
+    - Do Not Disturb
+    - Driving
+    - Holiday
+    - Personal
+    - Sleep
+    - Work
+
 rest_command: !include_dir_named rest_command
 switch: !include_dir_list switch
 template: !include_dir_list template

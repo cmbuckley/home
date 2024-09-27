@@ -1,0 +1,14 @@
+alias: Set Chris's iPhone Focus Name
+icon: mdi:moon-waning-crescent
+
+fields:
+  name:
+    description: Focus Name
+    required: true
+
+sequence:
+- action: input_select.select_option
+  target:
+    entity_id: input_select.chriss_iphone_focus_name
+  data:
+    option: "{{ name or 'Off' }}"
