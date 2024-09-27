@@ -22,6 +22,7 @@ action:
 - service: todoist.new_task
   data:
     project: House 🏡
+    section: External
     content: Put out {{ states('sensor.next_bin_collection') | lower }} bin
     assignee: Chris
     priority: 3

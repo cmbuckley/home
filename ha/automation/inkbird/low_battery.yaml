@@ -17,6 +17,7 @@ action:
 - service: todoist.new_task
   data:
     project: House 🏡
+    section: '{{ area_name(trigger.entity_id) }}'
     content: Replace {{ trigger.to_state.name }}
     description: Requires 2 × AAA batteries
     assignee: Chris
