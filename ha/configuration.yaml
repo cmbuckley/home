@@ -56,8 +56,10 @@ camera: !include_dir_list camera
 input_text:
   slack_verification_token:
     initial: !secret slack_verification_token
+    mode: password
   hass_internal_url:
     initial: !secret hass_internal_url
+    mode: password
 
 rest_command: !include_dir_named rest_command
 switch: !include_dir_list switch
