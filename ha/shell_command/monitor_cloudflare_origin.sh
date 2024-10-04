@@ -7,7 +7,7 @@ record_type="$3"
 port="${4:-443}"
 
 # Install openssl if not there already
-command -v openssl >/dev/null || apk add openssl
+command -v openssl >/dev/null || apk -q add openssl
 
 api=https://api.cloudflare.com/client/v4/zones
 
