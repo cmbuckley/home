@@ -13,7 +13,6 @@ sequence:
 - service: notify.slack
   data:
     message: ':rotating_light: Switched to Away mode, but alarm is not set!'
-    target: '#jarvis-test'
     data:
       blocks:
       - type: section
