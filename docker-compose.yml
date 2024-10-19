@@ -3,6 +3,7 @@ services:
   homeassistant:
     container_name: homeassistant
     image: homeassistant/home-assistant:stable
+    restart: unless-stopped
     network_mode: host
     volumes:
       - ./ha:/config:rw
@@ -11,4 +12,29 @@ services:
       - /run/dbus:/run/dbus:ro
     devices:
       - /dev/gpiomem
+
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto:latest
     restart: unless-stopped
+    volumes:
+      - ./mqtt:/mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001
+    command: |
+      mosquitto -c /mosquitto/config/mosquitto.conf
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:latest
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/London
+    ports:
+      - 8080:8080
+    volumes:
+      - ./z2m:/app/data:rw
+      - /run/udev:/run/udev:ro
+    devices:
+      - /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_9aec912f1e27ee11a40d83c1f49e3369-if00-port0:/dev/ttyACM0

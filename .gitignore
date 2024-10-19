@@ -5,3 +5,9 @@ __pycache__
 webostv.conf
 image
 ha/www/community
+
+# MQTT ignores
+mqtt/config/password.txt
+
+# Z2M ignores
+secrets.yaml
