@@ -21,22 +21,22 @@ My [Home Assistant](https://home-assistant.io/) configuration files.
 * Google Home Mini
 * Synology DS418
 
-## Custom Components
+## Integrations
 
 Custom components are loaded using [HACS](https://hacs.xyz):
 
 * [Alarm.com](https://github.com/pyalarmdotcom/alarmdotcom)
 * [EdgeOS (Ubiquiti)](https://github.com/elad-bar/ha-edgeos)
+* [ICS](https://github.com/KoljaWindeler/ics)
+* [Octopus Energy](https://github.com/BottlecapDave/HomeAssistant-OctopusEnergy)
 * [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule)
-
-Some custom components are still manually installed:
-
-* [tapo](https://github.com/petretiandrea/home-assistant-tapo-p100/) (3.0.0)
 
 ## Resources
 
-* [template-entity-row](https://github.com/thomasloven/lovelace-template-entity-row/)
+* [Mushroom](https://github.com/piitaya/lovelace-mushroom)
 * [layout-card](https://github.com/thomasloven/lovelace-layout-card)
+* [template-entity-row](https://github.com/thomasloven/lovelace-template-entity-row/)
+* [macOS Theme](https://github.com/JuanMTech/macOS-Theme)
 
 ## Interesting Config
 
