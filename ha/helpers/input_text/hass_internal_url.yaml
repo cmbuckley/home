@@ -1,0 +1,2 @@
+initial: !secret hass_internal_url
+mode: password

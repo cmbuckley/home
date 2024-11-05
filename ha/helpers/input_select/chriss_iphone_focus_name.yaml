@@ -1,0 +1,10 @@
+name: Chris's iPhone Focus Name
+icon: mdi:moon-waning-crescent
+options:
+- 'Off'
+- Do Not Disturb
+- Driving
+- Holiday
+- Personal
+- Sleep
+- Work

@@ -1,0 +1,2 @@
+initial: !secret slack_verification_token
+mode: password
