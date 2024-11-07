@@ -1,6 +1,7 @@
 platform: template
 sensors:
   festive_mode:
+    icon_template: mdi:pine-tree
     friendly_name: Festive Mode
     value_template: >
       {{ now().month == 12 or (now().month == 1 and now().day < 7) }}

@@ -8,7 +8,7 @@ sequence:
     entity_id: switch.christmas_tree
 - service: switch.turn_off
   target:
-    entity_id: switch.christmas_cupboard_lights
+    entity_id: switch.kitchen_cupboard_lights
 - delay:
     hours: 0
     minutes: 1
