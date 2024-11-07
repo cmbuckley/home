@@ -7,10 +7,25 @@ trigger:
   - device_tracker.chriss_iphone
   - device_tracker.iphone_13_pro_3
   zone: zone.waitrose
+  event: enter
+
 condition:
 - condition: numeric_state
   entity_id: todo.shopping_list
   above: 0
+- condition: state
+  alias: Waitrose is open
+  entity_id: schedule.waitrose_opening_hours
+  state: 'on'
+- condition: template
+  alias: Automation hasn't triggered in 2 hours
+  value_template: "{{ now() - this.attributes.last_triggered > timedelta(hours=2) }}"
+- condition: template
+  alias: User isn't driving
+  value_template: >
+    {% set sensor = 'sensor.{0}_activity'.format(trigger.entity_id | replace('device_tracker.', '')) %}
+    {{ states(sensor) != 'Automotive' }}
+
 action:
 - action: "notify.mobile_app_{{ trigger.entity_id | replace('device_tracker.', '') }}"
   data:
