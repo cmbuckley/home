@@ -55,17 +55,18 @@ camera: !include_dir_list camera
 
 input_text: !include_dir_named helpers/input_text
 input_select: !include_dir_named helpers/input_select
+schedule: !include_dir_named helpers/schedule
+template: !include_dir_list template
+group: !include_dir_named group
 
 rest_command: !include_dir_named rest_command
 switch: !include_dir_list switch
-template: !include_dir_list template
 binary_sensor: !include_dir_list binary_sensor
 sensor: !include_dir_list sensor
 command_line: !include_dir_list command_line
 frontend:
   themes: !include_dir_merge_named themes
 automation: !include_dir_list automation
-group: !include_dir_named group
 script: !include_dir_named script
 scene: !include scenes.yaml
 shell_command: !include_dir_named shell_command
