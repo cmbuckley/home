@@ -13,7 +13,7 @@ condition:
     {# actions block can be nested inside a legacy attachment #}
     {%- set action = {} -%}
     {%- if payload.message -%}
-      {%- if payload.message.attachments -%}
+      {%- if payload.message.attachments is defined -%}
         {%- set actions = payload.message.attachments[0].blocks | selectattr('type', 'equalto', 'actions') | first -%}
       {%- else -%}
         {%- set actions = payload.message.blocks | selectattr('type', 'equalto', 'actions') | first -%}
