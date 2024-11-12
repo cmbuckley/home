@@ -1,0 +1,26 @@
+id: tado_temperature_office
+alias: Tado - Office Temperature
+description: >
+  Sets the office temperature when working from home.
+mode: single
+
+trigger:
+- platform: time
+  at: '08:30:00'
+
+condition:
+- condition: template
+  alias: Working from home today
+  value_template: |
+    {% set entity = 'sensor.ics_1' %}
+    {% set loc = state_attr(entity, 'description') %}
+    {% set day = state_attr(entity, 'start') %}
+    {{ loc == 'Home' and as_timestamp(day, 0) == as_timestamp(today_at()) }}
+
+action:
+- action: tado.set_climate_timer
+  target:
+    entity_id: climate.office
+  data:
+    temperature: 18
+    time_period: '08:00:00'
