@@ -1,0 +1,38 @@
+id: presence_leaving_work
+alias: Presence - Leaving Work
+description: >
+  Notify when Chris is leaving work.
+mode: single
+
+trigger:
+- platform: zone
+  entity_id: person.chris_buckley
+  zone: zone.chris_work
+  event: leave
+
+condition:
+- condition: time
+  after: '15:00:00'
+- condition: state
+  entity_id: sensor.chriss_iphone_activity
+  state: Automotive
+
+action:
+- action: calendar.get_events
+  target:
+    entity_id: calendar.working_locations
+  data:
+    duration: 0
+  response_variable: calendars
+- if:
+  - condition: template
+    alias: Was in the office today
+    value_template: |-
+      {% set events = calendars[calendars | first].events %}
+      {{ events | length == 1 and events[0].summary == 'Office' }}
+  then:
+  - action: notify.mobile_app_chriss_iphone
+    data:
+      message: '🚗 Chris is leaving work.'
+      data:
+        url: 'findmy://items'
