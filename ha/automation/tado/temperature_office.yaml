@@ -6,9 +6,14 @@ mode: single
 
 trigger:
 - platform: time
-  at: '08:30:00'
+  at: '08:25:00'
 
 action:
+- action: homeassistant.update_entity
+  target:
+    entity_id: calendar.working_locations
+- delay:
+    minutes: 1
 - action: calendar.get_events
   target:
     entity_id: calendar.working_locations
