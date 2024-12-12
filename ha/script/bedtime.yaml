@@ -1,21 +1,26 @@
 alias: Bedtime
-sequence:
-- service: media_player.turn_off
-  target:
-    entity_id: media_player.living_room_tv
-- service: switch.turn_off
-  target:
-    entity_id: switch.christmas_tree
-- service: switch.turn_off
-  target:
-    entity_id: switch.kitchen_cupboard_lights
-- delay:
-    hours: 0
-    minutes: 1
-    seconds: 0
-    milliseconds: 0
-- service: alarm_control_panel.alarm_arm_home
-  target:
-    entity_id: alarm_control_panel.panel_panel
 mode: single
 icon: mdi:bed
+sequence:
+- action: media_player.turn_off
+  target:
+    entity_id:
+    - media_player.living_room_tv
+    - media_player.living_room
+- action: switch.turn_off
+  target:
+    entity_id: switch.christmas_tree
+- action: switch.turn_off
+  target:
+    entity_id: switch.kitchen_cupboard_lights
+- action: switch.turn_off
+  target:
+    entity_id: switch.outside_plug
+#- delay:
+#    hours: 0
+#    minutes: 1
+#    seconds: 0
+#    milliseconds: 0
+#- action: alarm_control_panel.alarm_arm_home
+#  target:
+#    entity_id: alarm_control_panel.panel_panel
