@@ -1,0 +1,18 @@
+id: tado_disconnection_warning
+alias: Tado - Disconnection Warning
+mode: single
+
+trigger:
+- platform: state
+  entity_id:
+  - binary_sensor.bp3865650432_connection_state
+  - binary_sensor.ib1222124544_connection_state
+  to: 'off'
+  for:
+    minutes: 1
+
+action:
+- action: notify.slack
+  data:
+    message: >
+      :no_entry_sign: {{ state_attr(trigger.to_state.entity_id, 'friendly_name') | replace(' connection state', '') }} is offline!
