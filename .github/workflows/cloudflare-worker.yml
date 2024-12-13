@@ -1,0 +1,22 @@
+name: Update Cloudflare Worker
+on:
+  push:
+    branches: main
+    paths:
+      - 'scripts/ha/slack-verification/*'
+jobs:
+  cloudflare-worker:
+    name: Deploy Cloudflare Worker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy Cloudflare Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: scripts/ha/slack-verification
+          secrets: |
+            SLACK_SIGNING_SECRET
+        env:
+          SLACK_SIGNING_SECRET: ${{ secrets.SLACK_SIGNING_SECRET }}

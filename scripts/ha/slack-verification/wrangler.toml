@@ -1,0 +1,5 @@
+name = "slack-verification"
+main = "index.js"
+workers_dev = true
+route = "pi.vistaverde.network/api/webhook/slack_interactivity"
+compatibility_date = "2024-12-13"
