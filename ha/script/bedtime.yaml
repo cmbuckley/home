@@ -9,13 +9,10 @@ sequence:
     - media_player.living_room
 - action: switch.turn_off
   target:
-    entity_id: switch.christmas_tree
-- action: switch.turn_off
-  target:
-    entity_id: switch.kitchen_cupboard_lights
-- action: switch.turn_off
-  target:
-    entity_id: switch.outside_plug
+    entity_id:
+    - switch.christmas_tree
+    - switch.outside_plug
+    - switch.bannister_lights
 #- delay:
 #    hours: 0
 #    minutes: 1
