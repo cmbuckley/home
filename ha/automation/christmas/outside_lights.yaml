@@ -1,0 +1,22 @@
+id: christmas_outside_lights
+alias: Christmas - Outside Lights
+trigger:
+- platform: sun
+  event: sunset
+
+condition:
+- condition: state
+  entity_id: binary_sensor.festive_mode
+  state: 'on'
+
+action:
+- action: switch.turn_on
+  data:
+    entity_id: |
+      {% set ns = namespace(entities = []) %}
+      {% for entity in label_entities('christmas') %}
+        {% if entity in area_entities('External') %}
+          {% set ns.entities = ns.entities + [entity] %}
+        {% endif %}
+      {% endfor %}
+      {{  ns.entities }}
