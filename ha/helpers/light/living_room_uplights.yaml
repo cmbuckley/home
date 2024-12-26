@@ -1,0 +1,7 @@
+platform: group
+name: Living Room Uplights
+entities:
+- light.uplight_1
+- light.uplight_2
+- light.uplight_3
+- light.uplight_4

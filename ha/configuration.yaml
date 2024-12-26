@@ -56,6 +56,7 @@ camera: !include_dir_list camera
 input_text: !include_dir_named helpers/input_text
 input_select: !include_dir_named helpers/input_select
 schedule: !include_dir_named helpers/schedule
+light: !include_dir_list helpers/light
 template: !include_dir_list template
 group: !include_dir_named group
 
