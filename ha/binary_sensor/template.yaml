@@ -6,3 +6,9 @@ sensors:
     value_template: >
       {{ now().month == 12 or (now().month == 1 and now().day < 7) }}
     device_class: running
+  baby_pillow:
+    icon_template: mdi:swap-horizontal-circle-outline
+    friendly_name: Pillow Direction
+    value_template: >
+      {{ ((now() | as_timestamp | int) / 86400) | round(0) % 2 == 1 }}
+    device_class: running
