@@ -32,4 +32,6 @@ action:
     data:
       message: '🗓️ Have you set tomorrow’s working location?'
       data:
-        url: 'googlecalendar://'
+        url: |
+          {% set urlformat = 'https://calendar.google.com/calendar/u/0/r/day/%Y/%-m/%-d' %}
+          {{ (now() + timedelta(days=1)) | as_timestamp | timestamp_custom(urlformat) }}
