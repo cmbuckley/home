@@ -31,7 +31,7 @@ action:
       {% set events = calendars[calendars | first].events %}
       {{ events | length == 1 and events[0].summary == 'Office' }}
   then:
-  - action: notify.mobile_app_chriss_iphone
+  - action: notify.mobile_app_iphone_pro_3
     data:
       message: '🚗 Chris is leaving work.'
       data:
