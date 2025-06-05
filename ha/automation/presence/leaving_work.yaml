@@ -22,7 +22,8 @@ action:
   target:
     entity_id: calendar.working_locations
   data:
-    duration: 0
+    duration:
+        days: 1
   response_variable: calendars
 - if:
   - condition: template
@@ -31,7 +32,7 @@ action:
       {% set events = calendars[calendars | first].events %}
       {{ events | length == 1 and events[0].summary == 'Office' }}
   then:
-  - action: notify.mobile_app_iphone_pro_3
+  - action: notify.mobile_app_iphone_13_pro_3
     data:
       message: '🚗 Chris is leaving work.'
       data:
